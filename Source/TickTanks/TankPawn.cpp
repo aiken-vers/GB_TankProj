@@ -47,7 +47,7 @@ void ATankPawn::Tick(float DeltaTime)
 
 	auto Location = GetActorLocation();
 	auto ForwardVector =  GetActorForwardVector();
-	SetActorLocation(Location+ForwardVector *ForwardScale*MovementSpeed*DeltaTime);
+	SetActorLocation(Location+ForwardVector *ForwardScale*MovementSpeed*DeltaTime, true);
 	
 }
 
