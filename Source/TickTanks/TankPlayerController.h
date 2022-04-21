@@ -17,10 +17,13 @@ class TICKTANKS_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	void OnMoveForward(float Scale);
+	
 	virtual void SetupInputComponent() override;
 	virtual void OnPossess(APawn* InPawn) override;
 private:
+	void OnMoveForward(float Scale);
+	void OnRotateRight(float Scale);
+	
 	UPROPERTY()
 	ATankPawn* TankPawn;
 };
