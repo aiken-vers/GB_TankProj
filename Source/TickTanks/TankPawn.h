@@ -55,6 +55,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	float ForwardScale=0;
-	float RotateScale=0;
+	float ForwardScaleMax=0;
+	float ForwardScaleCurrent=0;
+	float RotateScaleMax=0;
+	float RotateScaleCurrent=0;
 };

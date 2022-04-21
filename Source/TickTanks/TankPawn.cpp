@@ -29,12 +29,12 @@ ATankPawn::ATankPawn()
 
 void ATankPawn::MoveForward(float Scale)
 {
-	ForwardScale = Scale;	
+	ForwardScaleMax = Scale;	
 }
 
 void ATankPawn::RotateRight(float Scale)
 {
-	RotateScale = Scale;	
+	RotateScaleMax = Scale;	
 }
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
@@ -48,12 +48,15 @@ void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	ForwardScaleCurrent = FMath::Lerp(ForwardScaleCurrent, ForwardScaleMax, 0.1f);
+	RotateScaleCurrent = FMath::Lerp(RotateScaleCurrent, RotateScaleMax, 0.1f);
+	
 	auto Location = GetActorLocation();
 	auto ForwardVector =  GetActorForwardVector();
-	SetActorLocation(Location+ForwardVector *ForwardScale*MovementSpeed*DeltaTime, true);
+	SetActorLocation(Location+ForwardVector *ForwardScaleCurrent*MovementSpeed*DeltaTime, true);
 
 	auto Rotation = GetActorRotation();
-	Rotation.Yaw = (Rotation.Yaw + RotationSpeed * RotateScale * DeltaTime);
+	Rotation.Yaw = (Rotation.Yaw + RotationSpeed * RotateScaleCurrent * DeltaTime);
 	SetActorRotation(Rotation);
 }
 
