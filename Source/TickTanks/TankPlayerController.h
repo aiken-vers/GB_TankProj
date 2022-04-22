@@ -29,6 +29,7 @@ private:
 	void OnMoveForward(float Scale);
 	void OnRotateRight(float Scale);
 	void OnFire();
+	void OnFireAlt();
 	
 	UPROPERTY()
 	ATankPawn* TankPawn;

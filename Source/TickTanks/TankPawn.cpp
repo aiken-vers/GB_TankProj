@@ -55,7 +55,17 @@ void ATankPawn::PossessedBy(AController* NewController)
 void ATankPawn::Fire()
 {
 	if(Cannon)
+	{
 		Cannon->Fire();
+	}
+}
+
+void ATankPawn::FireAlt()
+{
+	if(Cannon)
+	{
+		Cannon->FireAlt();
+	}	
 }
 
 // Called when the game starts or when spawned

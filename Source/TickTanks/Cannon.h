@@ -32,8 +32,15 @@ public:
 	ECannonType Type;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 	float FireRate = 1.0f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+	float AltFireRate = 0.1f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+	int AltFireBurst = 3;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+	int Ammo = 20;
 	
 	void Fire();
+	void FireAlt();
 
 protected:
 	// Called when the game starts or when spawned

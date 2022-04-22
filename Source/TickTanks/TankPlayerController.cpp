@@ -14,6 +14,8 @@ void ATankPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("Forward", this, &ATankPlayerController::OnMoveForward);
 	InputComponent->BindAxis("Right", this, &ATankPlayerController::OnRotateRight);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &ATankPlayerController::OnFire);
+	InputComponent->BindAction("ShootAlt", IE_Pressed, this, &ATankPlayerController::OnFireAlt);
+	
 	SetShowMouseCursor(true);
 }
 
@@ -56,4 +58,9 @@ void ATankPlayerController::OnFire()
 {
 	if(TankPawn)
 		TankPawn->Fire();
+}
+void ATankPlayerController::OnFireAlt()
+{
+	if(TankPawn)
+		TankPawn->FireAlt();
 }
