@@ -30,6 +30,9 @@ ATankPawn::ATankPawn()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
+
+	CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>("CannonSpawnPoint");
+	CannonSpawnPoint->SetupAttachment(TankTurret);
 }
 
 void ATankPawn::MoveForward(float Scale)
@@ -46,8 +49,13 @@ void ATankPawn::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	TankController = Cast<ATankPlayerController>(NewController);
-
 	
+}
+
+void ATankPawn::Fire()
+{
+	if(Cannon)
+		Cannon->Fire();
 }
 
 // Called when the game starts or when spawned
@@ -55,6 +63,19 @@ void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if(CannonClass)
+	{
+		auto Transform = CannonSpawnPoint->GetComponentTransform();	
+		Cannon = Cast<ACannon>(GetWorld()->SpawnActor(CannonClass, &Transform));	
+		Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	}
+}
+
+void ATankPawn::Destroyed()
+{
+	Super::Destroyed();
+	if(Cannon)
+		Cannon->Destroy();
 }
 
 // Called every frame
@@ -86,10 +107,11 @@ void ATankPawn::Tick(float DeltaTime)
 	if(TankController)
 	{
 		auto MousePosition = TankController->GetMousePosition();
+		auto TurretRotation =  TankTurret->GetComponentRotation();
 		FRotator MouseRotation = UKismetMathLibrary::FindLookAtRotation(TankTurret->GetComponentLocation(), MousePosition);
 		MouseRotation.Roll = 0;
 		MouseRotation.Pitch = 0;
-		TankTurret->SetWorldRotation(MouseRotation);
+		TankTurret->SetWorldRotation(FMath::Lerp(TurretRotation, MouseRotation, 0.1f));
 	}
 }
 

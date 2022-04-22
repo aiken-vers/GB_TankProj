@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Cannon.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "TankPawn.generated.h"
@@ -32,6 +33,9 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UCameraComponent* Camera;
 	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UArrowComponent* CannonSpawnPoint;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float MovementSpeed=100;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
@@ -41,6 +45,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float RotationAcceleration = 0.1f;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
+	TSubclassOf<ACannon> CannonClass;
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Armory")
+	ACannon* Cannon;
+	
 
 	// Sets default values for this pawn's properties	
 	ATankPawn();	
@@ -49,9 +58,11 @@ public:
 	void RotateRight(float Scale);
 
 	virtual void PossessedBy(AController* NewController) override;
+	void Fire();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void Destroyed() override;
 
 public:	
 	// Called every frame
