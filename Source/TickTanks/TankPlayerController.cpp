@@ -3,6 +3,7 @@
 
 #include "TankPlayerController.h"
 
+#include "DrawDebugHelpers.h"
 #include "TankPawn.h"
 
 
@@ -12,13 +13,31 @@ void ATankPlayerController::SetupInputComponent()
 
 	InputComponent->BindAxis("Forward", this, &ATankPlayerController::OnMoveForward);
 	InputComponent->BindAxis("Right", this, &ATankPlayerController::OnRotateRight);
-	
+
+	SetShowMouseCursor(true);
 }
 
 void ATankPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	TankPawn = Cast<ATankPawn>(GetPawn());
+}
+
+void ATankPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);	
+	 
+	FVector ScreenMousePosition;
+	FVector MouseDirection;
+	DeprojectMousePositionToWorld(ScreenMousePosition, MouseDirection);
+	
+	//DrawDebugLine(GetWorld(), ScreenMousePosition, ScreenMousePosition + MouseDirection*5000, FColor::Blue, false, 1, 0, 5);
+
+	auto Z = FMath::Abs( GetPawn()->GetActorLocation().Z - ScreenMousePosition.Z);
+	MousePosition = ScreenMousePosition - Z * MouseDirection / MouseDirection.Z;
+	//DrawDebugSphere(GetWorld(), MousePosition, 20, 16, FColor::Red, false, 1);
+
+	
 }
 
 void ATankPlayerController::OnMoveForward(float Scale)

@@ -20,10 +20,18 @@ public:
 	
 	virtual void SetupInputComponent() override;
 	virtual void OnPossess(APawn* InPawn) override;
+
+	virtual void Tick(float DeltaSeconds) override;
+	FVector GetMousePosition() const
+	{
+		return MousePosition;
+	}
 private:
 	void OnMoveForward(float Scale);
 	void OnRotateRight(float Scale);
 	
 	UPROPERTY()
 	ATankPawn* TankPawn;
+	
+	FVector MousePosition;
 };

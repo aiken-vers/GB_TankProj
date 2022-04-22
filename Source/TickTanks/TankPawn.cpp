@@ -3,8 +3,13 @@
 
 #include "TankPawn.h"
 
+#include "TankPlayerController.h"
+#include "TickTanks.h"
+
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -36,6 +41,15 @@ void ATankPawn::RotateRight(float Scale)
 {
 	RotateScaleMax = Scale;	
 }
+
+void ATankPawn::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	TankController = Cast<ATankPlayerController>(NewController);
+
+	
+}
+
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
 {
@@ -48,8 +62,18 @@ void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	ForwardScaleCurrent = FMath::Lerp(ForwardScaleCurrent, ForwardScaleMax, 0.1f);
-	RotateScaleCurrent = FMath::Lerp(RotateScaleCurrent, RotateScaleMax, 0.1f);
+	ForwardScaleCurrent = FMath::Lerp(ForwardScaleCurrent, ForwardScaleMax, MovementAcceleration);
+	RotateScaleCurrent = FMath::Lerp(RotateScaleCurrent, RotateScaleMax, RotationAcceleration);
+
+	//Debug---------------
+	
+	//UE_LOG(LogTanks, Warning, TEXT("Forward scale = %f"), ForwardScaleCurrent);
+	/*
+	 *GEngine->AddOnScreenDebugMessage(2431, 0.1f, FColor::Red,
+		FString::Printf(TEXT("Forward scale = %f"),ForwardScaleCurrent));
+		*/
+	
+	//Debug---------------
 	
 	auto Location = GetActorLocation();
 	auto ForwardVector =  GetActorForwardVector();
@@ -58,6 +82,15 @@ void ATankPawn::Tick(float DeltaTime)
 	auto Rotation = GetActorRotation();
 	Rotation.Yaw = (Rotation.Yaw + RotationSpeed * RotateScaleCurrent * DeltaTime);
 	SetActorRotation(Rotation);
+
+	if(TankController)
+	{
+		auto MousePosition = TankController->GetMousePosition();
+		FRotator MouseRotation = UKismetMathLibrary::FindLookAtRotation(TankTurret->GetComponentLocation(), MousePosition);
+		MouseRotation.Roll = 0;
+		MouseRotation.Pitch = 0;
+		TankTurret->SetWorldRotation(MouseRotation);
+	}
 }
 
 // Called to bind functionality to input

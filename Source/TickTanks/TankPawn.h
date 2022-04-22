@@ -36,6 +36,10 @@ public:
 	float MovementSpeed=100;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float RotationSpeed = 100;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
+	float MovementAcceleration = 0.1f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
+	float RotationAcceleration = 0.1f;
 	
 
 	// Sets default values for this pawn's properties	
@@ -43,6 +47,8 @@ public:
 
 	void MoveForward(float Scale);
 	void RotateRight(float Scale);
+
+	virtual void PossessedBy(AController* NewController) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -59,4 +65,6 @@ private:
 	float ForwardScaleCurrent=0;
 	float RotateScaleMax=0;
 	float RotateScaleCurrent=0;
+
+	class ATankPlayerController* TankController;
 };

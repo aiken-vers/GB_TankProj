@@ -4,3 +4,5 @@
 #include "Modules/ModuleManager.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, TickTanks, "TickTanks" );
+
+DEFINE_LOG_CATEGORY(LogTanks);
