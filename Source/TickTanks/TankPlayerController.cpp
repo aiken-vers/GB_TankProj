@@ -15,6 +15,7 @@ void ATankPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("Right", this, &ATankPlayerController::OnRotateRight);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &ATankPlayerController::OnFire);
 	InputComponent->BindAction("ShootAlt", IE_Pressed, this, &ATankPlayerController::OnFireAlt);
+	InputComponent->BindAction("SwapWeapons", IE_Pressed, this, &ATankPlayerController::OnSwapWeapons);
 	
 	SetShowMouseCursor(true);
 }
@@ -63,4 +64,10 @@ void ATankPlayerController::OnFireAlt()
 {
 	if(TankPawn)
 		TankPawn->FireAlt();
+}
+
+void ATankPlayerController::OnSwapWeapons()
+{
+	if(TankPawn)
+		TankPawn->SwapWeapons();
 }

@@ -86,12 +86,34 @@ void ATankPawn::SetupCannon(TSubclassOf<ACannon> InCannonClass)
 	}
 }
 
+void ATankPawn::SwapWeapons()
+{
+	if(ActiveCannon==CannonClass)
+		ActiveCannon = SecondaryCannonClass;
+	else
+		ActiveCannon = CannonClass;	
+
+	if(Cannon)
+	{
+		Cannon->Destroy();
+		Cannon = nullptr;
+	}
+	if(ActiveCannon)
+	{
+		auto Transform = CannonSpawnPoint->GetComponentTransform();
+		FActorSpawnParameters Params;
+		Params.Instigator = this;
+		Cannon = GetWorld()->SpawnActor<ACannon>(ActiveCannon, Transform, Params);	
+		Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	}
+}
+
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	SetupCannon(CannonClass);	
+	ActiveCannon = CannonClass;	
+	SetupCannon(ActiveCannon);	
 }
 
 void ATankPawn::Destroyed()

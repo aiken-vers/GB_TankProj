@@ -38,6 +38,7 @@ void AAmmoBox::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
 	if(Tank)
 	{
 		Tank->SetupCannon(CannonClass);
-	}
+		Destroy();
+	}	
 }
 
