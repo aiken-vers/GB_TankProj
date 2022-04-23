@@ -60,6 +60,7 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	void Fire();
 	void FireAlt();
+	void SetupCannon(TSubclassOf<ACannon> InCannonClass);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

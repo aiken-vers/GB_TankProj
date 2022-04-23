@@ -6,6 +6,7 @@
 
 #include <thread>
 
+#include "DrawDebugHelpers.h"
 
 
 // Sets default values
@@ -44,8 +45,34 @@ void ACannon::Fire()
 			}
 			break;	
 		case ECannonType::Trace:
-			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Trace")));
-			break;
+			{
+				FHitResult HitResult;
+				auto Start = SpawnPoint-> GetComponentLocation();
+				auto End = Start+SpawnPoint->GetForwardVector()*2000;
+				FCollisionObjectQueryParams ObjQuerryParams;
+				ObjQuerryParams.AddObjectTypesToQuery(ECC_Pawn);
+				ObjQuerryParams.AddObjectTypesToQuery(ECC_Vehicle);
+				ObjQuerryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+				ObjQuerryParams.AddObjectTypesToQuery(ECC_Destructible);
+				ObjQuerryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+				FCollisionQueryParams Params;
+				Params.AddIgnoredActor(this);
+				Params.AddIgnoredActor(GetInstigator());
+				if(GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, ObjQuerryParams,Params))
+				{
+					DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Cyan, false, 2);
+					GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Trace")));
+					if(HitResult.Actor.IsValid())
+						HitResult.Actor->Destroy();
+				}
+				else
+				{
+					DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 2);
+				}
+				
+				break;
+			}
+			
 	}
 	Ammo--;
 	bReadyToFire = false;
@@ -56,18 +83,28 @@ void ACannon::FireAlt()
 	if(!bReadyToFire||Ammo<AltFireBurst)
 		return;
 
-	for(int i=0;i<AltFireBurst;i++)
-	{
-		switch(Type) {
-		case ECannonType::Projectile:
-			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("AltProjectile")));
-			break;
+	switch(Type) {
+	case ECannonType::Projectile:
+		{
+			for(int i=0;i<AltFireBurst;i++)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("AltProjectile")));
 
-		case ECannonType::Trace:
-			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("AltTrace")));
-			break;
+				if(ProjectileType)
+				{
+					FActorSpawnParameters SpawnParams;
+					SpawnParams.Instigator = GetInstigator();
+					SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+					GetWorld()->SpawnActor<AProjectile>(ProjectileType, SpawnPoint->GetComponentTransform(), SpawnParams);
+				}				
+			}				
 		}
+		break;	
+	case ECannonType::Trace:
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Trace")));
+		break;
 	}
+	
 	Ammo-=AltFireBurst;
 	bReadyToFire = false;
 	GetWorld()->GetTimerManager().SetTimer(ReloadHandle, this, &ACannon::OnReload, FireRate, false);	
