@@ -50,7 +50,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
 	TSubclassOf<ACannon> SecondaryCannonClass;
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Armory")
-	ACannon* Cannon;	
+	ACannon* Cannon;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
+	int StartPrimaryAmmo = 20;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
+	int StartSecondaryAmmo = 40;
 		
 
 	// Sets default values for this pawn's properties	
@@ -64,6 +68,7 @@ public:
 	void FireAlt();
 	void SetupCannon(TSubclassOf<ACannon> InCannonClass);
 	void SwapWeapons();
+	void RefillAmmo(float AmmoCap);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -82,6 +87,7 @@ private:
 	float RotateScaleMax=0;
 	float RotateScaleCurrent=0;
 	TSubclassOf<ACannon> ActiveCannon;
-
+	int PrimaryAmmo = StartPrimaryAmmo;
+	int SecondaryAmmo = StartSecondaryAmmo;
 	class ATankPlayerController* TankController;
 };

@@ -23,6 +23,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
 	TSubclassOf<ACannon> CannonClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
+	float AmmoCapasity=0.5;
 	// Sets default values for this actor's properties
 	AAmmoBox();
 

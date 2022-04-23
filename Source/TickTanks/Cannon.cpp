@@ -27,7 +27,7 @@ ACannon::ACannon()
 
 void ACannon::Fire()
 {
-	if(!bReadyToFire||Ammo<=0)
+	if(!bReadyToFire)
 		return;
 	
 	switch(Type) {
@@ -74,13 +74,12 @@ void ACannon::Fire()
 			}
 			
 	}
-	Ammo--;
 	bReadyToFire = false;
 	GetWorld()->GetTimerManager().SetTimer(ReloadHandle, this, &ACannon::OnReload, FireRate, false);
 }
 void ACannon::FireAlt()
 {
-	if(!bReadyToFire||Ammo<AltFireBurst)
+	if(!bReadyToFire)
 		return;
 
 	switch(Type) {
@@ -104,8 +103,6 @@ void ACannon::FireAlt()
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Trace")));
 		break;
 	}
-	
-	Ammo-=AltFireBurst;
 	bReadyToFire = false;
 	GetWorld()->GetTimerManager().SetTimer(ReloadHandle, this, &ACannon::OnReload, FireRate, false);	
 }
@@ -124,8 +121,6 @@ void ACannon::Tick(float DeltaTime)
 
 	auto RemainingTime = GetWorld()->GetTimerManager().GetTimerRemaining(ReloadHandle);
 	GEngine->AddOnScreenDebugMessage(98754, -1, FColor::Blue, FString::Printf(TEXT("Until reload %f"), RemainingTime));
-	GEngine->AddOnScreenDebugMessage(98755, -1, FColor::Blue, FString::Printf(TEXT("AMMO %i"), Ammo));
-
 }
 
 void ACannon::OnReload()

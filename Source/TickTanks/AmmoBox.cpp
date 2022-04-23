@@ -37,7 +37,10 @@ void AAmmoBox::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other
 	auto Tank = Cast<ATankPawn>(Other);
 	if(Tank)
 	{
-		Tank->SetupCannon(CannonClass);
+		if(CannonClass)
+			Tank->SetupCannon(CannonClass);
+		
+		Tank->RefillAmmo(AmmoCapasity);
 		Destroy();
 	}	
 }

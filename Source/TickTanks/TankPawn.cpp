@@ -54,17 +54,48 @@ void ATankPawn::PossessedBy(AController* NewController)
 
 void ATankPawn::Fire()
 {
-	if(Cannon)
-	{
-		Cannon->Fire();
+	if(Cannon && Cannon->bReadyToFire)
+	{		
+		if(ActiveCannon==CannonClass)
+		{
+			if(PrimaryAmmo<=0)
+				return;
+			
+			Cannon->Fire();
+			PrimaryAmmo--;			
+		}			
+		else
+		{
+			if(SecondaryAmmo<=0)
+				return;
+			
+			Cannon->Fire();
+			SecondaryAmmo--;
+		}
+		
 	}
 }
 
 void ATankPawn::FireAlt()
 {
-	if(Cannon)
-	{
-		Cannon->FireAlt();
+	if(Cannon && Cannon->bReadyToFire)
+	{		
+		if(ActiveCannon==CannonClass)
+		{
+			if(PrimaryAmmo<Cannon->AltFireBurst)
+				return;
+			
+			Cannon->FireAlt();
+			PrimaryAmmo-=Cannon->AltFireBurst;			
+		}			
+		else
+		{
+			if(SecondaryAmmo<Cannon->AltFireBurst)
+				return;
+			
+			Cannon->FireAlt();
+			SecondaryAmmo-=Cannon->AltFireBurst;
+		}		
 	}	
 }
 
@@ -76,6 +107,7 @@ void ATankPawn::SetupCannon(TSubclassOf<ACannon> InCannonClass)
 		Cannon = nullptr;
 	}
 	CannonClass = InCannonClass;
+	ActiveCannon = CannonClass;
 	if(CannonClass)
 	{
 		auto Transform = CannonSpawnPoint->GetComponentTransform();
@@ -108,6 +140,12 @@ void ATankPawn::SwapWeapons()
 	}
 }
 
+void ATankPawn::RefillAmmo(float AmmoCap)
+{
+	PrimaryAmmo = PrimaryAmmo + StartPrimaryAmmo*AmmoCap;
+	SecondaryAmmo = SecondaryAmmo + StartSecondaryAmmo*AmmoCap;
+}
+
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
 {
@@ -138,7 +176,12 @@ void ATankPawn::Tick(float DeltaTime)
 	 *GEngine->AddOnScreenDebugMessage(2431, 0.1f, FColor::Red,
 		FString::Printf(TEXT("Forward scale = %f"),ForwardScaleCurrent));
 		*/
-	
+
+	if(ActiveCannon==CannonClass)
+		GEngine->AddOnScreenDebugMessage(98755, -1, FColor::Blue, FString::Printf(TEXT("PRIM_AMMO %i"), PrimaryAmmo));
+	else
+		GEngine->AddOnScreenDebugMessage(98756, -1, FColor::Blue, FString::Printf(TEXT("SEC_AMMO %i"), SecondaryAmmo));
+		
 	//Debug---------------
 	
 	auto Location = GetActorLocation();
@@ -157,7 +200,7 @@ void ATankPawn::Tick(float DeltaTime)
 		MouseRotation.Roll = 0;
 		MouseRotation.Pitch = 0;
 		TankTurret->SetWorldRotation(FMath::Lerp(TurretRotation, MouseRotation, 0.1f));
-	}
+	}	
 }
 
 // Called to bind functionality to input

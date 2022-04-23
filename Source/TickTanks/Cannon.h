@@ -41,8 +41,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 	int AltFireBurst = 3;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
-	int Ammo = 20;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 	TSubclassOf<AProjectile> ProjectileType;
 	
 	void Fire();
@@ -51,14 +49,15 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	bool bReadyToFire = true;
 private:
 	void OnReload();	
 
-	bool bReadyToFire = true;
+	
 	FTimerHandle ReloadHandle;
 
 };
