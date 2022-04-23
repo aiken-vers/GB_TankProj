@@ -75,8 +75,10 @@ void ATankPawn::BeginPlay()
 	
 	if(CannonClass)
 	{
-		auto Transform = CannonSpawnPoint->GetComponentTransform();	
-		Cannon = Cast<ACannon>(GetWorld()->SpawnActor(CannonClass, &Transform));	
+		auto Transform = CannonSpawnPoint->GetComponentTransform();
+		FActorSpawnParameters Params;
+		Params.Instigator = this;
+		Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, Transform, Params);	
 		Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	}
 }

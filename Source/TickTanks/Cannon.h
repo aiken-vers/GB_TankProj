@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Projectile.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/Actor.h"
 #include "Cannon.generated.h"
@@ -21,6 +22,9 @@ class TICKTANKS_API ACannon : public AActor
 	
 public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
+	USceneComponent* EmptyRoot;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UStaticMeshComponent* Mesh;
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
@@ -38,6 +42,8 @@ public:
 	int AltFireBurst = 3;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 	int Ammo = 20;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+	TSubclassOf<AProjectile> ProjectileType;
 	
 	void Fire();
 	void FireAlt();

@@ -11,6 +11,7 @@ AProjectile::AProjectile()
 
 	Collision = CreateDefaultSubobject<USphereComponent>("Collision");
 	RootComponent = Collision;
+	Collision->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnBeginOverlap);
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	Mesh -> SetupAttachment(RootComponent);
@@ -21,6 +22,33 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AProjectile::Move, MovementRate);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AProjectile::Move, MovementRate, true);
+	StartPosition = GetActorLocation();
+}
+
+void AProjectile::Destroyed()
+{
+	Super::Destroyed();
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+}
+
+void AProjectile::Move()
+{
+	auto Location = GetActorLocation()+GetActorForwardVector() *MovementRate*MovementSpeed;
+	SetActorLocation(Location, true);
+	if(FVector::Distance(StartPosition, GetActorLocation())>MaxDistance)
+	{
+		Destroy();
+	}
+}
+
+void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
+                                 int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(Other != GetInstigator() && Other->GetInstigator() != GetInstigator())
+	{
+		Destroy();
+		Other->Destroy();
+	}
 }
 

@@ -3,7 +3,10 @@
 
 #include "Cannon.h"
 
+
 #include <thread>
+
+
 
 // Sets default values
 ACannon::ACannon()
@@ -11,7 +14,8 @@ ACannon::ACannon()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	RootComponent = CreateDefaultSubobject<USceneComponent>("RootComponent");
+	EmptyRoot = CreateDefaultSubobject<USceneComponent>("RootComponent");
+	RootComponent = EmptyRoot;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	Mesh->SetupAttachment(RootComponent);
 	
@@ -27,9 +31,18 @@ void ACannon::Fire()
 	
 	switch(Type) {
 		case ECannonType::Projectile:
-			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Projectile")));
-			break;
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Projectile")));
 
+				if(ProjectileType)
+				{
+					FActorSpawnParameters SpawnParams;
+					SpawnParams.Instigator = GetInstigator();
+					SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+					GetWorld()->SpawnActor<AProjectile>(ProjectileType, SpawnPoint->GetComponentTransform(), SpawnParams);
+				}	
+			}
+			break;	
 		case ECannonType::Trace:
 			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Trace")));
 			break;
