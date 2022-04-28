@@ -28,7 +28,11 @@ void ATankPlayerController::OnPossess(APawn* InPawn)
 
 void ATankPlayerController::Tick(float DeltaSeconds)
 {
-	Super::Tick(DeltaSeconds);	
+	Super::Tick(DeltaSeconds);
+
+	if(!GetPawn())
+		return;
+	
 	 
 	FVector ScreenMousePosition;
 	FVector MouseDirection;

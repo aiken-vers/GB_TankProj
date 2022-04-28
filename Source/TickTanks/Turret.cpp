@@ -23,7 +23,7 @@ ATurret::ATurret()
 	CannonSpawnPoint->SetupAttachment(TurretHead);
 	
 	TargetRange = CreateDefaultSubobject<USphereComponent>("TargetRange");
-	TargetRange->SetupAttachment(TargetRange);
+	TargetRange->SetupAttachment(RootComponent);
 	TargetRange->OnComponentBeginOverlap.AddDynamic(this, &ATurret::OnTargetBeginOverlap);
 	TargetRange->OnComponentEndOverlap.AddDynamic(this, &ATurret::OnTargetEndOverlap);
 	
@@ -34,7 +34,7 @@ ATurret::ATurret()
 void ATurret::BeginPlay()
 {
 	Super::BeginPlay();
-	if(CannonSpawnPoint)
+	if(CannonClass)
 	{
 		auto Transform = CannonSpawnPoint->GetComponentTransform();
 		Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, Transform);	
@@ -63,7 +63,14 @@ void ATurret::Tick(float DeltaTime)
 		//Rotation.Roll = 0;
 		//Rotation.Pitch = 0;
 		TurretHead->SetWorldRotation(FMath::Lerp(TurretRotation, Rotation, 0.1f));
+
+		if(TurretRotation.Equals(Rotation, 2))
+		{
+			if(Cannon)
+				Cannon->Fire();
+		}
 	}
+	
 
 	
 

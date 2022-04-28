@@ -159,6 +159,7 @@ void ATankPawn::Destroyed()
 	Super::Destroyed();
 	if(Cannon)
 		Cannon->Destroy();
+	UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
 }
 
 // Called every frame
