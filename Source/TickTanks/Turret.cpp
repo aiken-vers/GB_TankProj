@@ -76,8 +76,13 @@ void ATurret::Tick(float DeltaTime)
 
 }
 
+void ATurret::TakeDamage(const FDamageInfo& DamageInfo)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Turret damaged %f"), DamageInfo.Damage));
+}
+
 void ATurret::OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                   int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(Other==this)
 		return;

@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DamageTarget.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
+
 
 UCLASS()
 class TICKTANKS_API AProjectile : public AActor
@@ -24,7 +26,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
 	float MovementSpeed = 100;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
-	float Damage = 1;
+	float Damage = 1.0f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
 	float MaxDistance = 2000;
 	// Sets default values for this actor's properties

@@ -42,6 +42,8 @@ public:
 	int AltFireBurst = 3;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 	TSubclassOf<AProjectile> ProjectileType;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+	float TraceDamage = 1.0f;
 	
 	void Fire();
 	void FireAlt();

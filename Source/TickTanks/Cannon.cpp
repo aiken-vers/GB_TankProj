@@ -63,7 +63,19 @@ void ACannon::Fire()
 					DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Cyan, false, 2);
 					GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Trace")));
 					if(HitResult.Actor.IsValid())
-						HitResult.Actor->Destroy();
+					{
+						//HitResult.Actor->Destroy();
+						auto DamageTarget =  Cast<IDamageTarget>(HitResult.Actor);
+						if(DamageTarget)
+						{
+							FDamageInfo DInfo;
+							DInfo.Damage = TraceDamage;
+							DInfo.Instigator = GetInstigator();
+							DInfo.Attacker = this;
+							DamageTarget->TakeDamage(DInfo);
+						}
+					}
+					
 				}
 				else
 				{

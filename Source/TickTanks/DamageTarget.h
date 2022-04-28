@@ -5,6 +5,19 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "DamageTarget.generated.h"
+USTRUCT(BlueprintType)
+struct FDamageInfo
+{
+	GENERATED_BODY();
+public:
+	UPROPERTY()
+	APawn* Instigator;
+	UPROPERTY()
+	AActor* Attacker;
+	UPROPERTY()
+	float Damage;
+	
+};
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
@@ -23,5 +36,5 @@ class TICKTANKS_API IDamageTarget
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	
+	virtual void TakeDamage(const FDamageInfo& DamageInfo) = 0;
 };

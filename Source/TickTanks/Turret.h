@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Cannon.h"
+#include "DamageTarget.h"
 #include "GameFramework/Actor.h"
 #include "Turret.generated.h"
 
@@ -13,7 +14,7 @@ class UStaticMeshComponent;
 class UBoxComponent;
 
 UCLASS()
-class TICKTANKS_API ATurret : public AActor
+class TICKTANKS_API ATurret : public AActor, public IDamageTarget
 {
 	GENERATED_BODY()
 	
@@ -51,6 +52,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void TakeDamage(const FDamageInfo& DamageInfo) override;
+
 private:
 
 	UFUNCTION()
@@ -60,6 +63,8 @@ private:
 	void OnTargetEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	void FindBestTarget();
+
+	
 
 	TWeakObjectPtr<AActor> BestTarget;
 

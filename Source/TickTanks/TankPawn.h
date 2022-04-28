@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Cannon.h"
+#include "DamageTarget.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "TankPawn.generated.h"
@@ -13,7 +14,7 @@ class UStaticMeshComponent;
 class UBoxComponent;
 
 UCLASS()
-class TICKTANKS_API ATankPawn : public APawn
+class TICKTANKS_API ATankPawn : public APawn, public IDamageTarget
 {
 	GENERATED_BODY()
 
@@ -69,6 +70,7 @@ public:
 	void SetupCannon(TSubclassOf<ACannon> InCannonClass);
 	void SwapWeapons();
 	void RefillAmmo(float AmmoCap);
+	virtual void TakeDamage(const FDamageInfo& DamageInfo) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

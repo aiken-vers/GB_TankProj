@@ -3,6 +3,8 @@
 
 #include "Projectile.h"
 
+
+
 // Sets default values
 AProjectile::AProjectile()
 {
@@ -48,7 +50,17 @@ void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Ot
 	if(Other != GetInstigator() && Other->GetInstigator() != GetInstigator())
 	{
 		Destroy();
-		Other->Destroy();
+		//Other->Destroy();
+
+		auto DamageTarget =  Cast<IDamageTarget>(Other);
+		if(DamageTarget)
+		{
+			FDamageInfo DInfo;
+			DInfo.Damage = Damage;
+			DInfo.Instigator = GetInstigator();
+			DInfo.Attacker = this;
+			DamageTarget->TakeDamage(DInfo);
+		}
 	}
 }
 

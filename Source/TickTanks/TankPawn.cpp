@@ -146,6 +146,11 @@ void ATankPawn::RefillAmmo(float AmmoCap)
 	SecondaryAmmo = SecondaryAmmo + StartSecondaryAmmo*AmmoCap;
 }
 
+void ATankPawn::TakeDamage(const FDamageInfo& DamageInfo)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Damage Taken %f"), DamageInfo.Damage));
+}
+
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
 {
