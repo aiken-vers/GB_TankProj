@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Cannon.h"
 #include "DamageTarget.h"
+#include "HealthComponent.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "TankPawn.generated.h"
@@ -36,6 +37,8 @@ public:
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UArrowComponent* CannonSpawnPoint;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UHealthComponent* HealthComponent;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float MovementSpeed=100;
@@ -84,6 +87,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
+	void OnDeath();
+	void OnHealthChanged(float Health);
 	float ForwardScaleMax=0;
 	float ForwardScaleCurrent=0;
 	float RotateScaleMax=0;

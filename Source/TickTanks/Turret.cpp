@@ -27,7 +27,9 @@ ATurret::ATurret()
 	TargetRange->OnComponentBeginOverlap.AddDynamic(this, &ATurret::OnTargetBeginOverlap);
 	TargetRange->OnComponentEndOverlap.AddDynamic(this, &ATurret::OnTargetEndOverlap);
 	
-
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
+	HealthComponent->OnDeath.AddUObject(this, &ATurret::OnDeath);
+	HealthComponent->OnHealthChanged.AddUObject(this, &ATurret::OnHealthChanged);
 }
 
 // Called when the game starts or when spawned
@@ -78,7 +80,7 @@ void ATurret::Tick(float DeltaTime)
 
 void ATurret::TakeDamage(const FDamageInfo& DamageInfo)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Turret damaged %f"), DamageInfo.Damage));
+	HealthComponent->TakeDamage(DamageInfo);
 }
 
 void ATurret::OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
@@ -118,5 +120,15 @@ void ATurret::FindBestTarget()
 			BestTarget = Target;
 		}
 	}
+}
+
+void ATurret::OnDeath()
+{
+	Destroy();
+}
+
+void ATurret::OnHealthChanged(float Health)
+{
+	GEngine->AddOnScreenDebugMessage(98758, 2, FColor::Red, FString::Printf(TEXT("Turret HP %f"), Health));
 }
 

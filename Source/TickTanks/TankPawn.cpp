@@ -33,6 +33,10 @@ ATankPawn::ATankPawn()
 
 	CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>("CannonSpawnPoint");
 	CannonSpawnPoint->SetupAttachment(TankTurret);
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
+	HealthComponent->OnDeath.AddUObject(this, &ATankPawn::OnDeath);
+	HealthComponent->OnHealthChanged.AddUObject(this, &ATankPawn::OnHealthChanged);
 }
 
 void ATankPawn::MoveForward(float Scale)
@@ -148,7 +152,7 @@ void ATankPawn::RefillAmmo(float AmmoCap)
 
 void ATankPawn::TakeDamage(const FDamageInfo& DamageInfo)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Damage Taken %f"), DamageInfo.Damage));
+	HealthComponent->TakeDamage(DamageInfo);
 }
 
 // Called when the game starts or when spawned
@@ -163,8 +167,7 @@ void ATankPawn::Destroyed()
 {
 	Super::Destroyed();
 	if(Cannon)
-		Cannon->Destroy();
-	UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+		Cannon->Destroy();	
 }
 
 // Called every frame
@@ -214,5 +217,17 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void ATankPawn::OnDeath()
+{
+	Destroy();
+	
+	UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+}
+
+void ATankPawn::OnHealthChanged(float Health)
+{
+	GEngine->AddOnScreenDebugMessage(98757, 10000, FColor::Red, FString::Printf(TEXT("Tank HP %f"), Health));
 }
 

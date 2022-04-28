@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Cannon.h"
 #include "DamageTarget.h"
+#include "HealthComponent.h"
 #include "GameFramework/Actor.h"
 #include "Turret.generated.h"
 
@@ -38,6 +39,9 @@ public:
 	TSubclassOf<ACannon> CannonClass;
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Armory")
 	ACannon* Cannon;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UHealthComponent* HealthComponent;
 	
 	// Sets default values for this actor's properties
 	ATurret();
@@ -64,7 +68,8 @@ private:
 
 	void FindBestTarget();
 
-	
+	void OnDeath();
+	void OnHealthChanged(float Health);
 
 	TWeakObjectPtr<AActor> BestTarget;
 
