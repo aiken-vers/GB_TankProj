@@ -34,11 +34,12 @@ ATurret::ATurret()
 void ATurret::BeginPlay()
 {
 	Super::BeginPlay();
-
-
-	auto Transform = CannonSpawnPoint->GetComponentTransform();
-	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, Transform);	
-	Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	if(CannonSpawnPoint)
+	{
+		auto Transform = CannonSpawnPoint->GetComponentTransform();
+		Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, Transform);	
+		Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	}
 	
 }
 
