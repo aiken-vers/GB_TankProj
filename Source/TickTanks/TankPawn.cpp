@@ -151,7 +151,7 @@ void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	ActiveCannon = CannonClass;	
-	SetupCannon(ActiveCannon);	
+	SetupCannon(ActiveCannon);
 }
 
 void ATankPawn::Destroyed()

@@ -14,16 +14,16 @@ ATurret::ATurret()
 
 	Collision = CreateDefaultSubobject<UBoxComponent>("Collision");
 	RootComponent = Collision;
-
+	TargetRange = CreateDefaultSubobject<USphereComponent>("TargetRange");
+	TargetRange->SetupAttachment(RootComponent);
+	
 	TurretBody = CreateDefaultSubobject<UStaticMeshComponent>("TurretBody");
 	TurretBody->SetupAttachment(RootComponent);
 	TurretHead = CreateDefaultSubobject<UStaticMeshComponent>("TurretHead");
 	TurretHead->SetupAttachment(TurretBody);
 	CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>("CannonSpawnPoint");
-	CannonSpawnPoint->SetupAttachment(TurretHead);
+	CannonSpawnPoint->SetupAttachment(TurretHead);	
 	
-	TargetRange = CreateDefaultSubobject<USphereComponent>("TargetRange");
-	TargetRange->SetupAttachment(RootComponent);
 	TargetRange->OnComponentBeginOverlap.AddDynamic(this, &ATurret::OnTargetBeginOverlap);
 	TargetRange->OnComponentEndOverlap.AddDynamic(this, &ATurret::OnTargetEndOverlap);
 	
