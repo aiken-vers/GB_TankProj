@@ -33,7 +33,7 @@ void ACannon::Fire()
 	switch(Type) {
 		case ECannonType::Projectile:
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Projectile")));
+				//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Projectile")));
 
 				if(ProjectileType)
 				{
@@ -61,7 +61,7 @@ void ACannon::Fire()
 				if(GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, ObjQuerryParams,Params))
 				{
 					DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Cyan, false, 2);
-					GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Trace")));
+					//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Trace")));
 					if(HitResult.Actor.IsValid())
 					{
 						//HitResult.Actor->Destroy();
