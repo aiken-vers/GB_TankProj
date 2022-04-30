@@ -22,6 +22,7 @@ class TICKTANKS_API ADefaultTankActor : public AActor, public IDamageTarget
 	GENERATED_BODY()
 	
 public:
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UBoxComponent* Collision;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
@@ -35,8 +36,10 @@ public:
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Armory")
 	ACannon* Cannon;
 
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UHealthComponent* HealthComponent;
+	
 	
 	
 	// Sets default values for this actor's properties

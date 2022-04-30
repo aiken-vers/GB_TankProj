@@ -7,7 +7,8 @@
 ATurret::ATurret()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	/*
+/*
+	
 	Collision = CreateDefaultSubobject<UBoxComponent>("Collision");
 	RootComponent = Collision;
 	
@@ -18,11 +19,14 @@ ATurret::ATurret()
 	CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>("CannonSpawnPoint");
 	CannonSpawnPoint->SetupAttachment(Head);
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
-	HealthComponent->OnDeath.AddUObject(this, &ATurret::OnDeath);
-	HealthComponent->OnHealthChanged.AddUObject(this, &ATurret::OnHealthChanged);
-	*/
+	HealthComponent->OnDeath.AddUObject(this, &ADefaultTankActor::OnDeath);
+	HealthComponent->OnHealthChanged.AddUObject(this, &ADefaultTankActor::OnHealthChanged);
+
+*/
+	TargetRange=CreateDefaultSubobject<USphereComponent>("TargetRange");
+	TargetRange->SetupAttachment(RootComponent);
 	TargetRange->OnComponentBeginOverlap.AddDynamic(this, &ATurret::OnTargetBeginOverlap);
-	TargetRange->OnComponentEndOverlap.AddDynamic(this, &ATurret::OnTargetEndOverlap);
+	TargetRange->OnComponentEndOverlap.AddDynamic(this, &ATurret::OnTargetEndOverlap);	
 }
 
 // Called when the game starts or when spawned

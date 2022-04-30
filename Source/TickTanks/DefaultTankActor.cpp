@@ -20,10 +20,11 @@ ADefaultTankActor::ADefaultTankActor()
 	Head->SetupAttachment(Body);
 	CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>("CannonSpawnPoint");
 	CannonSpawnPoint->SetupAttachment(Head);
+	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 	HealthComponent->OnDeath.AddUObject(this, &ADefaultTankActor::OnDeath);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ADefaultTankActor::OnHealthChanged);
-
+	
 }
 
 
@@ -31,6 +32,7 @@ void ADefaultTankActor::TakeDamage(const FDamageInfo& DamageInfo)
 {
 	HealthComponent->TakeDamage(DamageInfo);
 }
+
 
 void ADefaultTankActor::RotateHead(FVector Target, bool Rotate2D)
 {
@@ -87,6 +89,6 @@ void ADefaultTankActor::OnDeath()
 
 void ADefaultTankActor::OnHealthChanged(float Health)
 {
-	GEngine->AddOnScreenDebugMessage(987864, 10000, FColor::Purple, FString::Printf(TEXT("Tank HP %f"), Health));
+	GEngine->AddOnScreenDebugMessage(98768, 10000, FColor::Purple, FString::Printf(TEXT("Tank HP %f"), Health));
 }
 

@@ -7,17 +7,20 @@
 #include "DefaultTankActor.h"
 #include "Turret.generated.h"
 
+
 UCLASS()
 class TICKTANKS_API ATurret : public ADefaultTankActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	USphereComponent* TargetRange;
 	
+	
 	// Sets default values for this actor's properties
-	ATurret();
+	ATurret();	
 
 protected:
 	// Called when the game starts or when spawned
