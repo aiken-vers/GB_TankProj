@@ -2,55 +2,34 @@
 
 
 #include "Turret.h"
-#include "Components/BoxComponent.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 ATurret::ATurret()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	/*
 	Collision = CreateDefaultSubobject<UBoxComponent>("Collision");
 	RootComponent = Collision;
-	TargetRange = CreateDefaultSubobject<USphereComponent>("TargetRange");
-	TargetRange->SetupAttachment(RootComponent);
 	
-	TurretBody = CreateDefaultSubobject<UStaticMeshComponent>("TurretBody");
-	TurretBody->SetupAttachment(RootComponent);
-	TurretHead = CreateDefaultSubobject<UStaticMeshComponent>("TurretHead");
-	TurretHead->SetupAttachment(TurretBody);
+	Body = CreateDefaultSubobject<UStaticMeshComponent>("TurretBody");
+	Body->SetupAttachment(RootComponent);
+	Head = CreateDefaultSubobject<UStaticMeshComponent>("TurretHead");
+	Head->SetupAttachment(Body);
 	CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>("CannonSpawnPoint");
-	CannonSpawnPoint->SetupAttachment(TurretHead);	
-	
-	TargetRange->OnComponentBeginOverlap.AddDynamic(this, &ATurret::OnTargetBeginOverlap);
-	TargetRange->OnComponentEndOverlap.AddDynamic(this, &ATurret::OnTargetEndOverlap);
-	
+	CannonSpawnPoint->SetupAttachment(Head);
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 	HealthComponent->OnDeath.AddUObject(this, &ATurret::OnDeath);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ATurret::OnHealthChanged);
+	*/
+	TargetRange->OnComponentBeginOverlap.AddDynamic(this, &ATurret::OnTargetBeginOverlap);
+	TargetRange->OnComponentEndOverlap.AddDynamic(this, &ATurret::OnTargetEndOverlap);
 }
 
 // Called when the game starts or when spawned
 void ATurret::BeginPlay()
 {
 	Super::BeginPlay();
-	if(CannonClass)
-	{
-		auto Transform = CannonSpawnPoint->GetComponentTransform();
-		Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, Transform);	
-		Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	}
-	
-}
-
-void ATurret::Destroyed()
-{
-	Super::Destroyed();
-	
-	if(Cannon)
-		Cannon->Destroy();
+	SetupCannon(CannonClass);	
 }
 
 // Called every frame
@@ -60,11 +39,9 @@ void ATurret::Tick(float DeltaTime)
 
 	if(BestTarget.IsValid())
 	{
-		auto Rotation = UKismetMathLibrary::FindLookAtRotation(TurretHead->GetComponentLocation(), BestTarget->GetActorLocation());
-		auto TurretRotation =  TurretHead->GetComponentRotation();		
-		//Rotation.Roll = 0;
-		//Rotation.Pitch = 0;
-		TurretHead->SetWorldRotation(FMath::Lerp(TurretRotation, Rotation, 0.1f));
+		auto Rotation = UKismetMathLibrary::FindLookAtRotation(Head->GetComponentLocation(), BestTarget->GetActorLocation());
+		auto TurretRotation =  Head->GetComponentRotation();
+		RotateHead(TurretRotation, Rotation, false);
 
 		if(TurretRotation.Equals(Rotation, 2))
 		{
@@ -72,15 +49,6 @@ void ATurret::Tick(float DeltaTime)
 				Cannon->Fire();
 		}
 	}
-	
-
-	
-
-}
-
-void ATurret::TakeDamage(const FDamageInfo& DamageInfo)
-{
-	HealthComponent->TakeDamage(DamageInfo);
 }
 
 void ATurret::OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
@@ -121,14 +89,3 @@ void ATurret::FindBestTarget()
 		}
 	}
 }
-
-void ATurret::OnDeath()
-{
-	Destroy();
-}
-
-void ATurret::OnHealthChanged(float Health)
-{
-	GEngine->AddOnScreenDebugMessage(98758, 2, FColor::Red, FString::Printf(TEXT("Turret HP %f"), Health));
-}
-

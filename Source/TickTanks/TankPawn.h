@@ -8,6 +8,11 @@
 #include "HealthComponent.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Components/BoxComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "TankPlayerController.h"
 #include "TankPawn.generated.h"
 
 class UCameraComponent;
@@ -71,6 +76,7 @@ public:
 	void Fire();
 	void FireAlt();
 	void SetupCannon(TSubclassOf<ACannon> InCannonClass);
+	void ChangeCannon(TSubclassOf<ACannon> InCannonClass);
 	void SwapWeapons();
 	void RefillAmmo(float AmmoCap);
 	virtual void TakeDamage(const FDamageInfo& DamageInfo) override;

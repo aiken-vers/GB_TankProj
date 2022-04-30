@@ -3,13 +3,10 @@
 
 #include "TankPawn.h"
 
-#include "TankPlayerController.h"
+
 #include "TickTanks.h"
 
-#include "Camera/CameraComponent.h"
-#include "Components/BoxComponent.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Kismet/KismetSystemLibrary.h"
+
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -65,7 +62,6 @@ void ATankPawn::Fire()
 			if(PrimaryAmmo<=0)
 				return;
 			
-			Cannon->Fire();
 			PrimaryAmmo--;			
 		}			
 		else
@@ -73,10 +69,9 @@ void ATankPawn::Fire()
 			if(SecondaryAmmo<=0)
 				return;
 			
-			Cannon->Fire();
 			SecondaryAmmo--;
 		}
-		
+		Cannon->Fire();
 	}
 }
 
@@ -110,16 +105,21 @@ void ATankPawn::SetupCannon(TSubclassOf<ACannon> InCannonClass)
 		Cannon->Destroy();
 		Cannon = nullptr;
 	}
-	CannonClass = InCannonClass;
-	ActiveCannon = CannonClass;
-	if(CannonClass)
+	if(InCannonClass)
 	{
 		auto Transform = CannonSpawnPoint->GetComponentTransform();
 		FActorSpawnParameters Params;
 		Params.Instigator = this;
-		Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, Transform, Params);	
+		Cannon = GetWorld()->SpawnActor<ACannon>(InCannonClass, Transform, Params);	
 		Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	}
+}
+void ATankPawn::ChangeCannon(TSubclassOf<ACannon> InCannonClass)
+{
+	
+	CannonClass = InCannonClass;
+	ActiveCannon = CannonClass;
+	SetupCannon(ActiveCannon);
 }
 
 void ATankPawn::SwapWeapons()
@@ -129,20 +129,10 @@ void ATankPawn::SwapWeapons()
 	else
 		ActiveCannon = CannonClass;	
 
-	if(Cannon)
-	{
-		Cannon->Destroy();
-		Cannon = nullptr;
-	}
-	if(ActiveCannon)
-	{
-		auto Transform = CannonSpawnPoint->GetComponentTransform();
-		FActorSpawnParameters Params;
-		Params.Instigator = this;
-		Cannon = GetWorld()->SpawnActor<ACannon>(ActiveCannon, Transform, Params);	
-		Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	}
+	SetupCannon(ActiveCannon);
 }
+
+
 
 void ATankPawn::RefillAmmo(float AmmoCap)
 {
