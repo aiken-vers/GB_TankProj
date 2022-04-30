@@ -55,6 +55,12 @@ void ATurret::Tick(float DeltaTime)
 	}
 }
 
+void ATurret::OnHealthChanged(float Health)
+{
+	Super::OnHealthChanged(Health);
+	GEngine->AddOnScreenDebugMessage(98768, 10000, FColor::Purple, FString::Printf(TEXT("Turret HP %f"), Health));
+}
+
 void ATurret::OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
                                    int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {

@@ -64,8 +64,10 @@ void ADefaultTankActor::SetupCannon(TSubclassOf<ACannon> InCannonClass)
 	}
 	if(InCannonClass)
 	{
-		auto Transform = CannonSpawnPoint->GetComponentTransform();	
-		Cannon = GetWorld()->SpawnActor<ACannon>(InCannonClass, Transform);	
+		auto Transform = CannonSpawnPoint->GetComponentTransform();
+		FActorSpawnParameters Params;
+		Params.Instigator = this;
+		Cannon = GetWorld()->SpawnActor<ACannon>(InCannonClass, Transform, Params);	
 		Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	}
 }
@@ -89,6 +91,6 @@ void ADefaultTankActor::OnDeath()
 
 void ADefaultTankActor::OnHealthChanged(float Health)
 {
-	GEngine->AddOnScreenDebugMessage(98768, 10000, FColor::Purple, FString::Printf(TEXT("Tank HP %f"), Health));
+	GEngine->AddOnScreenDebugMessage(98768, 10000, FColor::Purple, FString::Printf(TEXT("Turret HP %f"), Health));
 }
 

@@ -14,24 +14,12 @@ ATankPawn::ATankPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Collision = CreateDefaultSubobject<UBoxComponent>("Collision");
-	RootComponent = Collision;
-
-	TankBody = CreateDefaultSubobject<UStaticMeshComponent>("TankBody");
-	TankBody->SetupAttachment(RootComponent);
-	TankTurret = CreateDefaultSubobject<UStaticMeshComponent>("TankTurret");
-	TankTurret->SetupAttachment(TankBody);
-
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	SpringArm->SetupAttachment(RootComponent);
 
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
-
-	CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>("CannonSpawnPoint");
-	CannonSpawnPoint->SetupAttachment(TankTurret);
-
-	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
+	
 	HealthComponent->OnDeath.AddUObject(this, &ATankPawn::OnDeath);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ATankPawn::OnHealthChanged);
 }
@@ -98,22 +86,6 @@ void ATankPawn::FireAlt()
 	}	
 }
 
-void ATankPawn::SetupCannon(TSubclassOf<ACannon> InCannonClass)
-{
-	if(Cannon)
-	{
-		Cannon->Destroy();
-		Cannon = nullptr;
-	}
-	if(InCannonClass)
-	{
-		auto Transform = CannonSpawnPoint->GetComponentTransform();
-		FActorSpawnParameters Params;
-		Params.Instigator = this;
-		Cannon = GetWorld()->SpawnActor<ACannon>(InCannonClass, Transform, Params);	
-		Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	}
-}
 void ATankPawn::ChangeCannon(TSubclassOf<ACannon> InCannonClass)
 {
 	
@@ -140,24 +112,12 @@ void ATankPawn::RefillAmmo(float AmmoCap)
 	SecondaryAmmo = SecondaryAmmo + StartSecondaryAmmo*AmmoCap;
 }
 
-void ATankPawn::TakeDamage(const FDamageInfo& DamageInfo)
-{
-	HealthComponent->TakeDamage(DamageInfo);
-}
-
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	ActiveCannon = CannonClass;	
 	SetupCannon(ActiveCannon);
-}
-
-void ATankPawn::Destroyed()
-{
-	Super::Destroyed();
-	if(Cannon)
-		Cannon->Destroy();	
 }
 
 // Called every frame
@@ -192,13 +152,9 @@ void ATankPawn::Tick(float DeltaTime)
 	SetActorRotation(Rotation);
 
 	if(TankController)
-	{
+	{		
 		auto MousePosition = TankController->GetMousePosition();
-		auto TurretRotation =  TankTurret->GetComponentRotation();
-		FRotator MouseRotation = UKismetMathLibrary::FindLookAtRotation(TankTurret->GetComponentLocation(), MousePosition);
-		MouseRotation.Roll = 0;
-		MouseRotation.Pitch = 0;
-		TankTurret->SetWorldRotation(FMath::Lerp(TurretRotation, MouseRotation, 0.1f));
+		RotateHead(MousePosition, true);
 	}	
 }
 

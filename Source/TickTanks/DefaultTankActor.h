@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/Pawn.h"
 #include "Cannon.h"
 #include "DamageTarget.h"
 #include "HealthComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "GameFramework/Actor.h"
 #include "DefaultTankActor.generated.h"
 
 class UArrowComponent;
@@ -17,7 +17,7 @@ class UStaticMeshComponent;
 class UBoxComponent;
 
 UCLASS()
-class TICKTANKS_API ADefaultTankActor : public AActor, public IDamageTarget
+class TICKTANKS_API ADefaultTankActor : public APawn, public IDamageTarget
 {
 	GENERATED_BODY()
 	
@@ -50,8 +50,8 @@ public:
 	void RotateHead(FVector Target,bool Rotate2D);
 	void RotateHead(FRotator HeadRotation, FRotator TargetRotation, bool Rotate2D);
 	void SetupCannon(TSubclassOf<ACannon> InCannonClass);
-	void OnDeath();
-	void OnHealthChanged(float Health);
+	virtual void OnDeath();
+	virtual void OnHealthChanged(float Health);
 
 protected:
 	// Called when the game starts or when spawned

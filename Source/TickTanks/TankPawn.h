@@ -3,47 +3,26 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Cannon.h"
-#include "DamageTarget.h"
-#include "HealthComponent.h"
-#include "GameFramework/Pawn.h"
+#include "DefaultTankActor.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/BoxComponent.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "TankPlayerController.h"
 #include "TankPawn.generated.h"
 
 class UCameraComponent;
-class UStaticMeshComponent;
-class UBoxComponent;
 
 UCLASS()
-class TICKTANKS_API ATankPawn : public APawn, public IDamageTarget
+class TICKTANKS_API ATankPawn : public ADefaultTankActor
 {
 	GENERATED_BODY()
 
-public:
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UBoxComponent* Collision;
-	
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UStaticMeshComponent* TankBody;
-	
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UStaticMeshComponent* TankTurret;
+public:	
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	USpringArmComponent* SpringArm;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UCameraComponent* Camera;
-	
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UArrowComponent* CannonSpawnPoint;
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UHealthComponent* HealthComponent;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float MovementSpeed=100;
@@ -53,13 +32,9 @@ public:
 	float MovementAcceleration = 0.1f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float RotationAcceleration = 0.1f;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
-	TSubclassOf<ACannon> CannonClass;
+		
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
 	TSubclassOf<ACannon> SecondaryCannonClass;
-	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Armory")
-	ACannon* Cannon;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
 	int StartPrimaryAmmo = 20;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
@@ -75,15 +50,12 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	void Fire();
 	void FireAlt();
-	void SetupCannon(TSubclassOf<ACannon> InCannonClass);
 	void ChangeCannon(TSubclassOf<ACannon> InCannonClass);
 	void SwapWeapons();
 	void RefillAmmo(float AmmoCap);
-	virtual void TakeDamage(const FDamageInfo& DamageInfo) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void Destroyed() override;
 
 public:	
 	// Called every frame
@@ -93,8 +65,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	void OnDeath();
-	void OnHealthChanged(float Health);
+	virtual void OnDeath() override;
+	virtual void OnHealthChanged(float Health) override;
 	float ForwardScaleMax=0;
 	float ForwardScaleCurrent=0;
 	float RotateScaleMax=0;
