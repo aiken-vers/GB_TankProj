@@ -39,6 +39,9 @@ public:
 	int StartPrimaryAmmo = 20;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
 	int StartSecondaryAmmo = 40;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
+	FName WaypointTag;
 		
 
 	// Sets default values for this pawn's properties	

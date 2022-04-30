@@ -87,8 +87,7 @@ void ATankPawn::FireAlt()
 }
 
 void ATankPawn::ChangeCannon(TSubclassOf<ACannon> InCannonClass)
-{
-	
+{	
 	CannonClass = InCannonClass;
 	ActiveCannon = CannonClass;
 	SetupCannon(ActiveCannon);
