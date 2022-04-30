@@ -31,7 +31,7 @@ public:
 	UStaticMeshComponent* Head;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UArrowComponent* CannonSpawnPoint;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Armory")
 	TSubclassOf<ACannon> CannonClass;
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Armory")
 	ACannon* Cannon;

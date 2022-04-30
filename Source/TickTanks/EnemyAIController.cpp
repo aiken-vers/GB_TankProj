@@ -58,20 +58,6 @@ void AEnemyAIController::Tick(float DeltaSeconds)
 		NextWaypoint=0;
 	auto Waypoint = Waypoints[NextWaypoint];
 
-	auto TargetRotation = UKismetMathLibrary::FindLookAtRotation(TankPawn->GetActorLocation(), Waypoint);
-	TargetRotation.Pitch=0;
-	TargetRotation.Roll=0;
-	auto Rotation = GetControlRotation();
-	Rotation.Pitch=0;
-	Rotation.Roll=0;
-	if(!TargetRotation.Equals(Rotation, 10))
-	{
-		TankPawn->RotateRight(1.0);
-	}
-	else
-	{
-		TankPawn->RotateRight(0);
-	}
 	if(2500 < FVector::DistSquared2D(Waypoint, TankPawn->GetActorLocation()))
 	{
 		TankPawn->MoveForward(1.0);
@@ -80,6 +66,28 @@ void AEnemyAIController::Tick(float DeltaSeconds)
 	{
 		NextWaypoint++;
 	}
+
+	auto TargetRotation = UKismetMathLibrary::FindLookAtRotation(TankPawn->GetActorLocation(), Waypoint);
+	TargetRotation.Pitch=0;
+	TargetRotation.Roll=0;
+	auto Rotation = GetControlRotation();
+	Rotation.Pitch=0;
+	Rotation.Roll=0;
+	auto Direction = FRotator::NormalizeAxis(TargetRotation.Yaw - Rotation.Yaw);
+	
+	if(!TargetRotation.Equals(Rotation, 10))
+	{
+		if(!TargetRotation.Equals(Rotation, 90))
+		{
+			TankPawn->MoveForward(0);
+		}
+		TankPawn->RotateRight(Direction > 0 ? 1 : -1);
+	}
+	else
+	{
+		TankPawn->RotateRight(0);
+	}
+	
 
 	//TankPawn->GetActorForwardVector();
 	//auto Direction = TankPawn->GetActorLocation() - Waypoint;
