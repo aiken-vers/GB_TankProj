@@ -91,6 +91,6 @@ void ADefaultTankActor::OnDeath()
 
 void ADefaultTankActor::OnHealthChanged(float Health)
 {
-	GEngine->AddOnScreenDebugMessage(98768, 10000, FColor::Purple, FString::Printf(TEXT("Turret HP %f"), Health));
+	
 }
 
