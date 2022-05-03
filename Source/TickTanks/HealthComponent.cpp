@@ -33,6 +33,11 @@ void UHealthComponent::TakeDamage(const FDamageInfo& DamageInfo)
 		if(OnDeath.IsBound())
 			OnDeath.Broadcast();		
 	}
+	if(Health<MaxHealth/2)
+	{
+		if(OnDamaged.IsBound())
+			OnDamaged.Broadcast();
+	}
 		
 }
 

@@ -21,7 +21,15 @@ ATankPawn::ATankPawn()
 	Camera->SetupAttachment(SpringArm);
 	
 	HealthComponent->OnDeath.AddUObject(this, &ATankPawn::OnDeath);
+	HealthComponent->OnDamaged.AddUObject(this, &ATankPawn::OnDamaged);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ATankPawn::OnHealthChanged);
+
+	VisualEffect_Damaged = CreateDefaultSubobject<UParticleSystemComponent>("VisualEffect_Damaged");
+	VisualEffect_Damaged->SetupAttachment(RootComponent);
+
+	Audio_Death = CreateDefaultSubobject<UAudioComponent>("AudioComponent");
+	Audio_Death->SetupAttachment(RootComponent);
+	
 }
 
 void ATankPawn::MoveForward(float Scale)
@@ -37,7 +45,7 @@ void ATankPawn::RotateRight(float Scale)
 void ATankPawn::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	TankController = Cast<ATankPlayerController>(NewController);
+	TankController = Cast<ITargetController>(NewController);
 	
 }
 
@@ -59,6 +67,13 @@ void ATankPawn::Fire()
 			
 			SecondaryAmmo--;
 		}
+		Cannon->Fire();
+	}
+}
+void ATankPawn::FireAI()
+{
+	if(Cannon)
+	{
 		Cannon->Fire();
 	}
 }
@@ -152,8 +167,8 @@ void ATankPawn::Tick(float DeltaTime)
 
 	if(TankController)
 	{		
-		auto MousePosition = TankController->GetMousePosition();
-		RotateHead(MousePosition, true);
+		auto TargetLocation = TankController->GetTargetLocation();
+		RotateHead(TargetLocation, true);
 	}	
 }
 
@@ -166,9 +181,16 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATankPawn::OnDeath()
 {
-	Destroy();
+	if(Audio_Death)
+		Audio_Death->Play();
 	
-	UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+	Super::OnDeath();	
+	//UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+}
+void ATankPawn::OnDamaged()
+{	
+	if(VisualEffect_Damaged)
+		VisualEffect_Damaged->Activate();
 }
 
 void ATankPawn::OnHealthChanged(float Health)

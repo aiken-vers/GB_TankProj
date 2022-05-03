@@ -14,6 +14,7 @@ class TICKTANKS_API UHealthComponent : public UActorComponent
 	GENERATED_BODY()
 
 	DECLARE_EVENT(UHealthComponent, FDeathEvent);
+	DECLARE_EVENT(UHealthComponent, FDamagedEvent);
 	DECLARE_EVENT_OneParam(UHealthComponent, FHealthChangedEvent, float );
 	
 public:
@@ -28,6 +29,7 @@ public:
 	void TakeDamage(const FDamageInfo& DamageInfo);
 
 	FDeathEvent OnDeath;
+	FDamagedEvent OnDamaged;
 	FHealthChangedEvent OnHealthChanged;
 protected:
 	// Called when the game starts

@@ -23,6 +23,12 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UCameraComponent* Camera;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UParticleSystemComponent* VisualEffect_Damaged;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UAudioComponent* Audio_Death;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float MovementSpeed=100;
@@ -52,6 +58,7 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 	void Fire();
+	void FireAI();
 	void FireAlt();
 	void ChangeCannon(TSubclassOf<ACannon> InCannonClass);
 	void SwapWeapons();
@@ -69,6 +76,7 @@ public:
 
 private:
 	virtual void OnDeath() override;
+	void OnDamaged();
 	virtual void OnHealthChanged(float Health) override;
 	float ForwardScaleMax=0;
 	float ForwardScaleCurrent=0;
@@ -77,5 +85,5 @@ private:
 	TSubclassOf<ACannon> ActiveCannon;
 	int PrimaryAmmo = StartPrimaryAmmo;
 	int SecondaryAmmo = StartSecondaryAmmo;
-	class ATankPlayerController* TankController;
+	class ITargetController* TankController;
 };

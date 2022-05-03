@@ -75,3 +75,8 @@ void ATankPlayerController::OnSwapWeapons()
 	if(TankPawn)
 		TankPawn->SwapWeapons();
 }
+
+FVector ATankPlayerController::GetTargetLocation() const
+{
+	return MousePosition;
+}

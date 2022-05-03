@@ -20,17 +20,27 @@ ADefaultTankActor::ADefaultTankActor()
 	Head->SetupAttachment(Body);
 	CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>("CannonSpawnPoint");
 	CannonSpawnPoint->SetupAttachment(Head);
+
+	TargetRange=CreateDefaultSubobject<USphereComponent>("TargetRange");
+	TargetRange->SetupAttachment(RootComponent);
+	TargetRange->OnComponentBeginOverlap.AddDynamic(this, &ADefaultTankActor::OnTargetBeginOverlap);
+	TargetRange->OnComponentEndOverlap.AddDynamic(this, &ADefaultTankActor::OnTargetEndOverlap);
+	
 	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 	HealthComponent->OnDeath.AddUObject(this, &ADefaultTankActor::OnDeath);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ADefaultTankActor::OnHealthChanged);
+
+	VisualEffect_Death = CreateDefaultSubobject<UParticleSystemComponent>("VisualEffect_Death");
+	VisualEffect_Death->SetupAttachment(RootComponent);
 	
 }
 
 
 void ADefaultTankActor::TakeDamage(const FDamageInfo& DamageInfo)
 {
-	HealthComponent->TakeDamage(DamageInfo);
+	VisualEffect_Death->Activate();
+	HealthComponent->TakeDamage(DamageInfo);	
 }
 
 
@@ -86,6 +96,8 @@ void ADefaultTankActor::Destroyed()
 
 void ADefaultTankActor::OnDeath()
 {
+	if(VisualEffect_Death)
+		VisualEffect_Death->Activate();
 	Destroy();
 }
 
@@ -94,3 +106,48 @@ void ADefaultTankActor::OnHealthChanged(float Health)
 	
 }
 
+void ADefaultTankActor::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+//***********TARGETING**************************
+void ADefaultTankActor::OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
+								   int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(Other==this)
+		return;
+	Targets.Add(Other);
+	if(!BestTarget.IsValid())
+	{
+		FindBestTarget();
+	}
+}
+
+void ADefaultTankActor::OnTargetEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex)
+{
+	if(Other==this)
+		return;
+	Targets.Remove(Other);
+	if(Other == BestTarget)
+	{
+		FindBestTarget();
+	}
+}
+
+void ADefaultTankActor::FindBestTarget()
+{
+	float MinDistance = 5000000;
+	BestTarget = nullptr;
+	for(auto Target : Targets)
+	{
+		auto Distance = FVector::Dist2D(GetActorLocation(), Target->GetActorLocation());
+		if(MinDistance > Distance)
+		{
+			MinDistance = Distance;
+			BestTarget = Target;
+		}
+	}
+}
+//***********TARGETING**************************

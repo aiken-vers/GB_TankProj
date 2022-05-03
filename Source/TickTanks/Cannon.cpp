@@ -2,11 +2,13 @@
 
 
 #include "Cannon.h"
+#include "Cannon.h"
 
 
 #include <thread>
 
 #include "DrawDebugHelpers.h"
+#include "NavigationSystemTypes.h"
 
 
 // Sets default values
@@ -23,12 +25,24 @@ ACannon::ACannon()
 
 	SpawnPoint = CreateDefaultSubobject<UArrowComponent>("SpawnPoint");
 	SpawnPoint->SetupAttachment(RootComponent);
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>("AudioComponent");
+	AudioComponent->SetupAttachment(RootComponent);
+
+	VisualEffect = CreateDefaultSubobject<UParticleSystemComponent>("VisualEffect");
+	VisualEffect->SetupAttachment(RootComponent);
 }
 
 void ACannon::Fire()
 {
 	if(!bReadyToFire)
 		return;
+
+	if(AudioComponent)
+		AudioComponent->Play();
+	if(VisualEffect)
+		VisualEffect->Activate();
+	
 	
 	switch(Type) {
 		case ECannonType::Projectile:

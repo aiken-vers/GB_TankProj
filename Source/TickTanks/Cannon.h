@@ -5,8 +5,14 @@
 #include "CoreMinimal.h"
 #include "Projectile.h"
 #include "Components/ArrowComponent.h"
+#include "Components/AudioComponent.h"
+#include "ParticleHelper.h"
+#include "Particles/ParticleSystem.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/Actor.h"
 #include "Cannon.generated.h"
+
+
 
 UENUM()
 enum class ECannonType 
@@ -29,6 +35,13 @@ public:
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UArrowComponent* SpawnPoint;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UAudioComponent* AudioComponent;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UParticleSystemComponent* VisualEffect;
+	
 	
 	// Sets default values for this actor's properties
 	ACannon();

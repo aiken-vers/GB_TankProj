@@ -7,6 +7,9 @@
 #include "Cannon.h"
 #include "DamageTarget.h"
 #include "HealthComponent.h"
+#include "ParticleHelper.h"
+#include "Particles/ParticleSystem.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -36,9 +39,14 @@ public:
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Armory")
 	ACannon* Cannon;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	USphereComponent* TargetRange;
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UHealthComponent* HealthComponent;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UParticleSystemComponent* VisualEffect_Death;
 	
 	
 	
@@ -55,13 +63,36 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
-	//virtual void BeginPlay() override;
+	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
+
+	//***********TARGETING**************************
+	UFUNCTION()
+	void OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
+	UFUNCTION()
+	void OnTargetEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	void FindBestTarget();
+
+	TWeakObjectPtr<AActor> BestTarget;
+
+	UPROPERTY()
+	TArray<AActor*> Targets;
+	//***********TARGETING**************************	
 
 public:	
 	// Called every frame
 	//virtual void Tick(float DeltaTime) override;
+	
+	const AActor* GetBestTarget() const
+	{
+		return BestTarget.Get();
+	}
+	FRotator GetTurretRotation() const
+	{
+		return Head->GetComponentRotation();
+	}
 
 private:
 	

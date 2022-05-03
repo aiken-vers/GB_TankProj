@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "TargetController.h"
 #include "EnemyAIController.generated.h"
 
 class ATankPawn;
@@ -11,13 +12,14 @@ class ATankPawn;
  * 
  */
 UCLASS()
-class TICKTANKS_API AEnemyAIController : public AAIController
+class TICKTANKS_API AEnemyAIController : public AAIController, public ITargetController
 {
 	GENERATED_BODY()
 
 public:
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void Tick(float DeltaSeconds) override;
+	virtual FVector GetTargetLocation() const override;
 private:
 	TArray<FVector> Waypoints;
 
