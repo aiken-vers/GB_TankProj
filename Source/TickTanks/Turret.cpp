@@ -3,6 +3,8 @@
 
 #include "Turret.h"
 
+#include "DrawDebugHelpers.h"
+
 // Sets default values
 ATurret::ATurret()
 {
@@ -37,18 +39,20 @@ void ATurret::BeginPlay()
 void ATurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 	if(BestTarget.IsValid())
 	{		
 		auto TurretRotation =  GetTurretRotation();
 		auto Rotation = UKismetMathLibrary::FindLookAtRotation(Head->GetComponentLocation(), BestTarget->GetActorLocation());
 		RotateHead(TurretRotation, Rotation, false);
 		
-
+		
 		if(TurretRotation.Equals(Rotation, 2))
 		{
-			if(Cannon)
-				Cannon->Fire();
+			if(TraceTarget())
+			{
+				if(Cannon)
+					Cannon->Fire();
+			}			
 		}
 	}
 }
@@ -57,4 +61,37 @@ void ATurret::OnHealthChanged(float Health)
 {
 	Super::OnHealthChanged(Health);
 	GEngine->AddOnScreenDebugMessage(98768, 3, FColor::Purple, FString::Printf(TEXT("Turret HP %f"), Health));
+}
+
+bool ATurret::TraceTarget()
+{
+	FHitResult HitResult;
+	auto Range = TargetRange->GetScaledSphereRadius();
+	auto Start = CannonSpawnPoint-> GetComponentLocation();
+	auto End = Start+CannonSpawnPoint->GetForwardVector()*Range;
+	FCollisionObjectQueryParams ObjQuerryParams;
+	ObjQuerryParams.AddObjectTypesToQuery(ECC_Pawn);
+	ObjQuerryParams.AddObjectTypesToQuery(ECC_Pawn);
+	ObjQuerryParams.AddObjectTypesToQuery(ECC_Vehicle);
+	ObjQuerryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+	ObjQuerryParams.AddObjectTypesToQuery(ECC_Destructible);
+	ObjQuerryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetInstigator());
+	
+	if(GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, ObjQuerryParams,Params))
+	{
+		if(HitResult.Actor.IsValid() && Cast<APawn>(HitResult.Actor))
+		{
+			DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Magenta, false, 1);
+			return true;
+		}
+		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1);
+	}
+	else
+	{
+		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1);
+	}
+	return false;
 }

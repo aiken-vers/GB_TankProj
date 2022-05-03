@@ -44,7 +44,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
 	TSubclassOf<UCameraShakeBase> CameraShakeEffect;
-	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
+	UForceFeedbackEffect* ForceFeedbackEffect;
 	
 	// Sets default values for this actor's properties
 	ACannon();

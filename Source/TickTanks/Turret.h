@@ -31,7 +31,10 @@ public:
 
 	virtual void OnHealthChanged(float Health) override;
 
-private:
-
 	
+
+private:
+	bool TraceTarget();	
 };
+
+

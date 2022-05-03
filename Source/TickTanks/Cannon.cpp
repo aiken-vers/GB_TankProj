@@ -44,16 +44,18 @@ void ACannon::Fire()
 		VisualEffect->Activate();
 	if(CameraShakeEffect)
 	{
-
 		if(this->GetInstigator()->GetInstigatorController()==GetWorld()->GetFirstPlayerController())
 			GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeEffect);
-		
-		
-		//GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeEffect);
 	}
-		
-		
-	
+	//*************VIBRATION****************
+	if(ForceFeedbackEffect)
+	{		
+		FForceFeedbackParameters FeedParams;
+		FeedParams.bLooping=false;
+		if(this->GetInstigator()->GetInstigatorController()==GetWorld()->GetFirstPlayerController())
+			GetWorld()->GetFirstPlayerController()->ClientPlayForceFeedback(ForceFeedbackEffect, FeedParams);
+	}
+	//*************VIBRATION****************
 	
 	switch(Type) {
 		case ECannonType::Projectile:
@@ -99,8 +101,7 @@ void ACannon::Fire()
 							DInfo.Attacker = this;
 							DamageTarget->TakeDamage(DInfo);
 						}
-					}
-					
+					}					
 				}
 				else
 				{
