@@ -41,6 +41,9 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UParticleSystemComponent* VisualEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
+	TSubclassOf<UCameraShakeBase> CameraShakeEffect;
 	
 	
 	// Sets default values for this actor's properties

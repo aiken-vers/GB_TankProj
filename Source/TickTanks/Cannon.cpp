@@ -42,6 +42,17 @@ void ACannon::Fire()
 		AudioComponent->Play();
 	if(VisualEffect)
 		VisualEffect->Activate();
+	if(CameraShakeEffect)
+	{
+
+		if(this->GetInstigator()->GetInstigatorController()==GetWorld()->GetFirstPlayerController())
+			GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeEffect);
+		
+		
+		//GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeEffect);
+	}
+		
+		
 	
 	
 	switch(Type) {
