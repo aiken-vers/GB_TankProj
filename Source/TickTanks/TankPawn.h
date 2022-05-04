@@ -27,8 +27,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UParticleSystemComponent* VisualEffect_Damaged;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
-	UAudioComponent* Audio_Death;
+	
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float MovementSpeed=100;

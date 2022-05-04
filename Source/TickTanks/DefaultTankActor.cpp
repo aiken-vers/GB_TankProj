@@ -32,15 +32,17 @@ ADefaultTankActor::ADefaultTankActor()
 	HealthComponent->OnDeath.AddUObject(this, &ADefaultTankActor::OnDeath);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ADefaultTankActor::OnHealthChanged);
 
-	VisualEffect_Death = CreateDefaultSubobject<UParticleSystemComponent>("VisualEffect_Death");
-	VisualEffect_Death->SetupAttachment(RootComponent);
-	
+	Audio_Death = CreateDefaultSubobject<UAudioComponent>("AudioComponent");
+	Audio_Death->SetupAttachment(RootComponent);
 }
 
 
 void ADefaultTankActor::TakeDamage(const FDamageInfo& DamageInfo)
 {
-	VisualEffect_Death->Activate();
+	if(VisualEffect_Death)
+	{
+		UGameplayStatics::SpawnEmitterAttached(VisualEffect_Death, this->Body, "BODY");
+	}
 	HealthComponent->TakeDamage(DamageInfo);	
 }
 
@@ -97,11 +99,22 @@ void ADefaultTankActor::Destroyed()
 
 void ADefaultTankActor::OnDeath()
 {
+	if(Audio_Death)
+	{
+		if(Audio_Death)
+			Audio_Death->Play();
+	}
 	if(VisualEffect_Death)
 	{
-		UGameplayStatics::SpawnEmitterAtLocation(this, Cast<UParticleSystem>(VisualEffect_Death), this->GetActorLocation());
+		float ExplosionScale;
+		if(GetActorScale().X < 1.0f)
+			ExplosionScale = 2.0f/this->GetActorScale().X;
+		else
+			ExplosionScale = 2.0f*this->GetActorScale().X;
+			
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), VisualEffect_Death, this->Body->GetComponentLocation(),
+			FRotator::ZeroRotator, this->GetActorScale()*ExplosionScale);
 	}
-	//VisualEffect_Death->Activate();
 	Destroy();
 }
 

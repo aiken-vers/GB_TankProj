@@ -39,8 +39,9 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UAudioComponent* AudioComponent;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
-	UParticleSystemComponent* VisualEffect;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
+	UParticleSystem* BoomEffect;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
 	TSubclassOf<UCameraShakeBase> CameraShakeEffect;

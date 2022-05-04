@@ -26,10 +26,6 @@ ATankPawn::ATankPawn()
 
 	VisualEffect_Damaged = CreateDefaultSubobject<UParticleSystemComponent>("VisualEffect_Damaged");
 	VisualEffect_Damaged->SetupAttachment(RootComponent);
-
-	Audio_Death = CreateDefaultSubobject<UAudioComponent>("AudioComponent");
-	Audio_Death->SetupAttachment(RootComponent);
-	
 }
 
 void ATankPawn::MoveForward(float Scale)
@@ -180,10 +176,7 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 }
 
 void ATankPawn::OnDeath()
-{
-	if(Audio_Death)
-		Audio_Death->Play();
-	
+{	
 	Super::OnDeath();	
 	//UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
 }

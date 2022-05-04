@@ -9,6 +9,7 @@
 
 #include "DrawDebugHelpers.h"
 #include "NavigationSystemTypes.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -28,9 +29,6 @@ ACannon::ACannon()
 
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>("AudioComponent");
 	AudioComponent->SetupAttachment(RootComponent);
-
-	VisualEffect = CreateDefaultSubobject<UParticleSystemComponent>("VisualEffect");
-	VisualEffect->SetupAttachment(RootComponent);
 }
 
 void ACannon::Fire()
@@ -40,8 +38,16 @@ void ACannon::Fire()
 
 	if(AudioComponent)
 		AudioComponent->Play();
-	if(VisualEffect)
-		VisualEffect->Activate();
+	if(BoomEffect)
+	{
+		UGameplayStatics::SpawnEmitterAttached(BoomEffect, this->SpawnPoint, "GUN");
+		/*
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BoomEffect, this->SpawnPoint->GetComponentLocation(),
+			FRotator::ZeroRotator, this->GetActorScale());
+			*/
+		//VisualEffect->Activate();
+	}
+		
 	if(CameraShakeEffect)
 	{
 		if(this->GetInstigator()->GetInstigatorController()==GetWorld()->GetFirstPlayerController())

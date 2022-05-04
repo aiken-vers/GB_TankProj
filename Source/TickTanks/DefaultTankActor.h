@@ -47,7 +47,10 @@ public:
 	UHealthComponent* HealthComponent;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
-	UParticleSystemComponent* VisualEffect_Death;
+	UAudioComponent* Audio_Death;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
+	UParticleSystem* VisualEffect_Death;
 	
 	
 	
