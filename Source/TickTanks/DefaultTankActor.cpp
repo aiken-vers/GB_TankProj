@@ -5,6 +5,7 @@
 
 
 
+
 // Sets default values
 
 ADefaultTankActor::ADefaultTankActor()
@@ -97,7 +98,10 @@ void ADefaultTankActor::Destroyed()
 void ADefaultTankActor::OnDeath()
 {
 	if(VisualEffect_Death)
-		VisualEffect_Death->Activate();
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, Cast<UParticleSystem>(VisualEffect_Death), this->GetActorLocation());
+	}
+	//VisualEffect_Death->Activate();
 	Destroy();
 }
 
