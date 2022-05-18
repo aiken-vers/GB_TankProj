@@ -81,7 +81,7 @@ protected:
 
 	TWeakObjectPtr<AActor> BestTarget;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="AI")
 	TArray<AActor*> Targets;
 	//***********TARGETING**************************	
 

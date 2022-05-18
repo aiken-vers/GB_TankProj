@@ -52,6 +52,23 @@ void AEnemyAIController::Tick(float DeltaSeconds)
 
 	if(!TankPawn)
 		return;
+
+	auto BestTarget = TankPawn->GetBestTarget();
+	if(IsValid(BestTarget))
+	{
+		auto TargetToShootRotation = UKismetMathLibrary::FindLookAtRotation(TankPawn->Head->GetComponentLocation(), BestTarget->GetActorLocation());
+		auto TurretRotation =  TankPawn->GetTurretRotation();
+		TargetToShootRotation.Pitch=0;
+		TargetToShootRotation.Roll=0;
+		TurretRotation.Pitch=0;
+		TurretRotation.Roll = 0;
+
+		if(TurretRotation.Equals(TargetToShootRotation, 10))
+		{
+			TankPawn->FireAI();
+		}
+	}
+	
 	if(Waypoints.Num()<=0)
 		return;
 	if(NextWaypoint>=Waypoints.Num())
@@ -87,24 +104,7 @@ void AEnemyAIController::Tick(float DeltaSeconds)
 	{
 		TankPawn->RotateRight(0);
 	}
-
-	auto BestTarget = TankPawn->GetBestTarget();
-	if(BestTarget)
-	{
-		auto TargetToShootRotation = UKismetMathLibrary::FindLookAtRotation(TankPawn->Head->GetComponentLocation(), BestTarget->GetActorLocation());
-		auto TurretRotation =  TankPawn->GetTurretRotation();
-		TargetToShootRotation.Pitch=0;
-		TargetToShootRotation.Roll=0;
-		TurretRotation.Pitch=0;
-		TurretRotation.Roll = 0;
-
-		if(TurretRotation.Equals(TargetToShootRotation, 10))
-		{
-			TankPawn->FireAI();
-		}
-	}
 	
-
 	//TankPawn->GetActorForwardVector();
 	//auto Direction = TankPawn->GetActorLocation() - Waypoint;
 	

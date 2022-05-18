@@ -84,14 +84,14 @@ bool ATurret::TraceTarget()
 	{
 		if(HitResult.Actor.IsValid() && Cast<APawn>(HitResult.Actor))
 		{
-			DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Magenta, false, 1);
+			//DrawDebugLine(GetWorld(), Start, HitResult.Location, FColor::Magenta, false, 1);
 			return true;
 		}
-		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1);
+		//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1);
 	}
 	else
 	{
-		DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1);
+		//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1);
 	}
 	return false;
 }
