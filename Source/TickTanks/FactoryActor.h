@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "DamageTarget.h"
 #include "HealthComponent.h"
+#include "LevelPortal.h"
 #include "TankPawn.h"
 #include "Turret.h"
 #include "Components/BoxComponent.h"
@@ -52,6 +53,8 @@ public:
 	FName Team;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Level")
 	TArray<AActor*> FactoryWalls;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Level")
+	TSubclassOf<ALevelPortal> Portal;
 
 	
 	// Sets default values for this actor's properties

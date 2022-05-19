@@ -184,6 +184,8 @@ void ACannon::FireTrace()
 
 void ACannon::FireTraceAlt()
 {
+	FireEffect();
+	
 	FHitResult HitResult;
     auto Start = SpawnPoint-> GetComponentLocation();
     auto End = Start+SpawnPoint->GetForwardVector()*2000;    
