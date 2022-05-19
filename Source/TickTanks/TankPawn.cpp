@@ -26,6 +26,9 @@ ATankPawn::ATankPawn()
 
 	VisualEffect_Damaged = CreateDefaultSubobject<UParticleSystemComponent>("VisualEffect_Damaged");
 	VisualEffect_Damaged->SetupAttachment(RootComponent);
+
+	PrimaryAmmo = StartPrimaryAmmo;
+	SecondaryAmmo = StartSecondaryAmmo;
 }
 
 void ATankPawn::MoveForward(float Scale)

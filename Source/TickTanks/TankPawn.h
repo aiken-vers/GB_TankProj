@@ -41,9 +41,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
 	TSubclassOf<ACannon> SecondaryCannonClass;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
-	int StartPrimaryAmmo = 20;
+	int StartPrimaryAmmo = 40;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Armory")
-	int StartSecondaryAmmo = 40;
+	int StartSecondaryAmmo = 60;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
 	FName WaypointTag;
@@ -86,7 +86,7 @@ private:
 	float RotateScaleMax=0;
 	float RotateScaleCurrent=0;
 	TSubclassOf<ACannon> ActiveCannon;
-	int PrimaryAmmo = StartPrimaryAmmo;
-	int SecondaryAmmo = StartSecondaryAmmo;
+	int PrimaryAmmo;
+	int SecondaryAmmo;
 	class ITargetController* TankController;
 };
