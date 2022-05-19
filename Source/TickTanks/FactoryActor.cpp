@@ -17,8 +17,8 @@ AFactoryActor::AFactoryActor()
 	Building->SetupAttachment(RootComponent);
 	SpawnPoint = CreateDefaultSubobject<UArrowComponent>("SpawnPoint");
 	SpawnPoint->SetupAttachment(Building);
-	Audio_Death = CreateDefaultSubobject<UAudioComponent>("AudioComponent");
-	Audio_Death->SetupAttachment(RootComponent);
+	//Audio_Death = CreateDefaultSubobject<UAudioComponent>("AudioComponent");
+	//Audio_Death->SetupAttachment(RootComponent);
 	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 	HealthComponent->OnDeath.AddUObject(this, &AFactoryActor::OnDeath);
