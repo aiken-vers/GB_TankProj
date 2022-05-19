@@ -132,12 +132,17 @@ void ADefaultTankActor::BeginPlay()
 void ADefaultTankActor::OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
 								   int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(Other==this)
-		return;
-	Targets.Add(Other);
-	if(!BestTarget.IsValid())
+	if(ADefaultTankActor* Target = Cast<ADefaultTankActor>(Other))
 	{
-		FindBestTarget();
+		if(Other==this)
+			return;
+		if(!Target->Team.IsNone() && Target->Team==this->Team)
+			return;
+		Targets.Add(Other);
+		if(!BestTarget.IsValid())
+		{
+			FindBestTarget();
+		}
 	}
 }
 

@@ -29,7 +29,7 @@ public:
 
 	
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float MovementSpeed=100;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement")
 	float RotationSpeed = 100;
@@ -47,6 +47,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
 	FName WaypointTag;
+
+	int SpawnCounter = 0;
 		
 
 	// Sets default values for this pawn's properties	
@@ -62,6 +64,8 @@ public:
 	void ChangeCannon(TSubclassOf<ACannon> InCannonClass);
 	void SwapWeapons();
 	void RefillAmmo(float AmmoCap);
+
+	virtual void OnConstruction(const FTransform& Transform) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -131,6 +131,12 @@ void ATankPawn::RefillAmmo(float AmmoCap)
 	SecondaryAmmo = SecondaryAmmo + StartSecondaryAmmo*AmmoCap;
 }
 
+void ATankPawn::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	UE_LOG(LogTemp, Error, TEXT("Spawned %d"), SpawnCounter);
+}
+
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
 {

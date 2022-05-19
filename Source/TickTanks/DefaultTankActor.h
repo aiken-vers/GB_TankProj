@@ -51,7 +51,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
 	UParticleSystem* VisualEffect_Death;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
+	FName Team;
 	
 	
 	// Sets default values for this actor's properties
@@ -82,7 +84,7 @@ protected:
 	TWeakObjectPtr<AActor> BestTarget;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="AI")
-	TArray<AActor*> Targets;
+	TArray<AActor*> Targets;	
 	//***********TARGETING**************************	
 
 public:	
