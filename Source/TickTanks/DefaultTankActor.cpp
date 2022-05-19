@@ -132,10 +132,16 @@ void ADefaultTankActor::BeginPlay()
 void ADefaultTankActor::OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
 								   int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Error, TEXT("Overlaped with %s"), *Other->GetName());
 	if(ADefaultTankActor* Target = Cast<ADefaultTankActor>(Other))
 	{
+		UE_LOG(LogTemp, Error, TEXT("Overlaped: Other->ATankActor"));
 		if(Other==this)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Overlaped: Other==this"));
 			return;
+		}
+			
 		if(!Target->Team.IsNone() && Target->Team==this->Team)
 			return;
 		Targets.Add(Other);
@@ -149,8 +155,10 @@ void ADefaultTankActor::OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp
 void ADefaultTankActor::OnTargetEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
+	
 	if(Other==this)
-		return;
+		return;	
+		
 	Targets.Remove(Other);
 	if(Other == BestTarget)
 	{
