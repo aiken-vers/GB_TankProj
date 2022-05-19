@@ -34,7 +34,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UHealthComponent* HealthComponent;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UAudioComponent* Audio_Death;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
