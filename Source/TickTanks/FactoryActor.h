@@ -17,6 +17,7 @@
 class UArrowComponent;
 class UStaticMeshComponent;
 class UBoxComponent;
+class ALevelPortal;
 
 UCLASS()
 class TICKTANKS_API AFactoryActor : public AActor, public IDamageTarget
@@ -54,7 +55,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Level")
 	TArray<AActor*> FactoryWalls;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Level")
-	TSubclassOf<ALevelPortal> Portal;
+	ALevelPortal* Portal;
 
 	
 	// Sets default values for this actor's properties

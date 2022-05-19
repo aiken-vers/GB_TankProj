@@ -61,7 +61,7 @@ void ALevelPortal::OnTargetBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	auto Pawn = Cast<APawn>(Other);
-	if(Pawn && !LevelName.IsNone())
+	if(Pawn && !LevelName.IsNone() && IsActive)
 	{
 		if(Pawn->GetController()==GetWorld()->GetFirstPlayerController())
 		{

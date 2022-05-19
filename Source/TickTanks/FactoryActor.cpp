@@ -59,6 +59,9 @@ void AFactoryActor::OnDeath()
 	for(AActor* Wall : FactoryWalls)
 		Wall->Destroy();
 
+	if(Portal)
+		Portal->ActivatePortal();
+	
 	Destroyed = true;
 	//Destroy();
 }
