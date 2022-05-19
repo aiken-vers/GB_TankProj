@@ -65,6 +65,11 @@ void ATankPawn::Fire()
 		}
 		Cannon->Fire();
 	}
+
+	if(ActiveCannon==CannonClass)
+		GEngine->AddOnScreenDebugMessage(98755, 60, FColor::Blue, FString::Printf(TEXT("PRIM_AMMO %i"), PrimaryAmmo));
+	else
+		GEngine->AddOnScreenDebugMessage(98756, 60, FColor::Blue, FString::Printf(TEXT("SEC_AMMO %i"), SecondaryAmmo));
 }
 void ATankPawn::FireAI()
 {
@@ -94,7 +99,11 @@ void ATankPawn::FireAlt()
 			Cannon->FireAlt();
 			SecondaryAmmo-=Cannon->AltFireBurst;
 		}		
-	}	
+	}
+	if(ActiveCannon==CannonClass)
+		GEngine->AddOnScreenDebugMessage(98755, 60, FColor::Blue, FString::Printf(TEXT("PRIM_AMMO %i"), PrimaryAmmo));
+	else
+		GEngine->AddOnScreenDebugMessage(98756, 60, FColor::Blue, FString::Printf(TEXT("SEC_AMMO %i"), SecondaryAmmo));
 }
 
 void ATankPawn::ChangeCannon(TSubclassOf<ACannon> InCannonClass)
@@ -145,12 +154,12 @@ void ATankPawn::Tick(float DeltaTime)
 	 *GEngine->AddOnScreenDebugMessage(2431, 0.1f, FColor::Red,
 		FString::Printf(TEXT("Forward scale = %f"),ForwardScaleCurrent));
 		*/
-
+	/*
 	if(ActiveCannon==CannonClass)
 		GEngine->AddOnScreenDebugMessage(98755, -1, FColor::Blue, FString::Printf(TEXT("PRIM_AMMO %i"), PrimaryAmmo));
 	else
 		GEngine->AddOnScreenDebugMessage(98756, -1, FColor::Blue, FString::Printf(TEXT("SEC_AMMO %i"), SecondaryAmmo));
-		
+		*/
 	//Debug---------------
 	
 	auto Location = GetActorLocation();

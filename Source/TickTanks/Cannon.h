@@ -75,10 +75,20 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	bool bReadyToFire = true;
 private:
-	void OnReload();	
+	void OnReload();
+	void FireEffect();
+	void FireProjectile();
+	void FireTrace();
+	void FireTraceAlt();
+	FHitResult TraceToHit(FVector Start, FVector End);
+	void AltFire();
+	void StopAltFire();
+	
 
 	
 	FTimerHandle ReloadHandle;
+	FTimerHandle FireAltHandle;
+	int BurstFired = 0;
 
 };
 
