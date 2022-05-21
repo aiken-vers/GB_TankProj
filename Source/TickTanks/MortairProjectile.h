@@ -22,11 +22,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UParticleSystemComponent* ParticleTail;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
-	UParticleSystem* VisualEffect_Explosion;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
-	float ExplosionRadius = 100.0f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
-	float ExplosionImpulse = 1000.0f;
+	UParticleSystem* VisualEffect_Explosion;	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effect")
 	float ExplosionEffectScale = 5.0f;
 	// Sets default values for this actor's properties
@@ -39,6 +35,6 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	
 
 };

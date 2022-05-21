@@ -42,19 +42,14 @@ void AProjectile::Move()
 void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
                                  int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(Other != GetInstigator() && Other->GetInstigator() != GetInstigator())
+	if(NoSelfHit(Other))
 	{
 		Destroy();
-		//Other->Destroy();
+		DoDamage(Other);
 
-		auto DamageTarget =  Cast<IDamageTarget>(Other);
-		if(DamageTarget)
+		if(IsExplosive)
 		{
-			FDamageInfo DInfo;
-			DInfo.Damage = Damage;
-			DInfo.Instigator = GetInstigator();
-			DInfo.Attacker = this;
-			DamageTarget->TakeDamage(DInfo);
+			MakeExplosion(Other->GetActorLocation(), MovementSpeed*ExplosionImpulse);
 		}
 	}
 }

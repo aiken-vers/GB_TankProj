@@ -3,8 +3,6 @@
 
 #include "FactoryActor.h"
 
-#include "Interfaces/IHttpResponse.h"
-
 // Sets default values
 AFactoryActor::AFactoryActor()
 {

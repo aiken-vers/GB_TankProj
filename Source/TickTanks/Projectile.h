@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "BaseProjectile.h"
-#include "DamageTarget.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
