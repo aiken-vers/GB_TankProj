@@ -59,7 +59,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 	int AltFireBurst = 3;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
-	TSubclassOf<AProjectile> ProjectileType;
+	TSubclassOf<ABaseProjectile> ProjectileType;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 	float TraceDamage = 10.0f;
 	

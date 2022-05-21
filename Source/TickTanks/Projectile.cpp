@@ -10,13 +10,8 @@ AProjectile::AProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
-	Collision = CreateDefaultSubobject<USphereComponent>("Collision");
-	RootComponent = Collision;
+	
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnBeginOverlap);
-
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	Mesh -> SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BaseProjectile.h"
 #include "DamageTarget.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
@@ -10,23 +11,16 @@
 
 
 UCLASS()
-class TICKTANKS_API AProjectile : public AActor
+class TICKTANKS_API AProjectile : public ABaseProjectile
 {
 	GENERATED_BODY()
 	
-public:
-    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	USphereComponent* Collision;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UMeshComponent* Mesh;
+public:    
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
 	float MovementRate = 0.005f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
-	float MovementSpeed = 100;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
-	float Damage = 1.0f;
+	float MovementSpeed = 100;	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Projectile")
 	float MaxDistance = 2000;
 	// Sets default values for this actor's properties

@@ -173,7 +173,7 @@ void ATankPawn::Tick(float DeltaTime)
 	
 	auto Location = GetActorLocation();
 	auto ForwardVector =  GetActorForwardVector();
-	SetActorLocation(Location+ForwardVector *ForwardScaleCurrent*MovementSpeed*DeltaTime, true);
+	SetActorLocation(Location+ForwardVector *ForwardScaleCurrent*MovementSpeed*DeltaTime, false);
 
 	auto Rotation = GetActorRotation();
 	Rotation.Yaw = (Rotation.Yaw + RotationSpeed * RotateScaleCurrent * DeltaTime);

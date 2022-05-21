@@ -136,7 +136,7 @@ void ACannon::FireProjectile()
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Instigator = GetInstigator();
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		GetWorld()->SpawnActor<AProjectile>(ProjectileType, SpawnPoint->GetComponentTransform(), SpawnParams);
+		GetWorld()->SpawnActor<ABaseProjectile>(ProjectileType, SpawnPoint->GetComponentTransform(), SpawnParams);
 	}
 }
 
