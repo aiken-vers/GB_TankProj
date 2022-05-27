@@ -29,6 +29,11 @@ ATankPawn::ATankPawn()
 
 	PrimaryAmmo = StartPrimaryAmmo;
 	SecondaryAmmo = StartSecondaryAmmo;
+
+	Audio_AfterDeath = CreateDefaultSubobject<UAudioComponent>("AfterDeathAudio");
+	Audio_AfterDeath->SetupAttachment(RootComponent);
+	MonoSaturation = FVector4(0.0f, 0.0f, 0.0f, 1.0f);
+	MonoContrast = FVector4(1.0f, 1.0f, 1.0f, 1.54f);
 }
 
 void ATankPawn::MoveForward(float Scale)
@@ -145,7 +150,7 @@ void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	ActiveCannon = CannonClass;	
-	SetupCannon(ActiveCannon);
+	SetupCannon(ActiveCannon);	
 }
 
 // Called every frame
@@ -194,9 +199,38 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 }
 
 void ATankPawn::OnDeath()
-{	
+{
+	if(AfterDeath)
+		return;
+	
+	GetWorld()->GetTimerManager().SetTimer(CameraTimer, this, &ATankPawn::DeathCamera, 0.1f, true);
+
+	if(Audio_AfterDeath)
+		Audio_AfterDeath->Play();
+		
 	Super::OnDeath();	
-	//UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+	//UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);	
+}
+void ATankPawn::DeathCamera()
+{
+	if(Camera->PostProcessSettings.ColorSaturation.X > MonoSaturation.X ||
+		Camera->PostProcessSettings.ColorContrast.W > MonoContrast.W)
+	{
+		if(Camera->PostProcessSettings.ColorSaturation.X > MonoSaturation.X)
+		{
+			Camera->PostProcessSettings.ColorSaturation.X-=0.03f;
+			Camera->PostProcessSettings.ColorSaturation.Y-=0.03f;
+			Camera->PostProcessSettings.ColorSaturation.Z-=0.03f;
+			Camera->PostProcessSettings.bOverride_ColorSaturation=true;
+		}
+		if(Camera->PostProcessSettings.ColorContrast.W > MonoContrast.W)
+		{
+			Camera->PostProcessSettings.ColorContrast.W+=0.03f;
+			Camera->PostProcessSettings.bOverride_ColorContrast=true;
+		}			
+		return;
+	}
+	GetWorld()->GetTimerManager().ClearTimer(CameraTimer);
 }
 void ATankPawn::OnDamaged()
 {	

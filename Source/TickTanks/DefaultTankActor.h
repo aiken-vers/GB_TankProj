@@ -51,6 +51,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
 	UParticleSystem* VisualEffect_Death;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
+	UParticleSystem* VisualEffect_AfterDeath;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
 	FName Team;
@@ -65,8 +67,7 @@ public:
 	void RotateHead(FRotator HeadRotation, FRotator TargetRotation, bool Rotate2D);
 	void SetupCannon(TSubclassOf<ACannon> InCannonClass);
 	virtual void OnDeath();
-	virtual void OnHealthChanged(float Health);
-
+	virtual void OnHealthChanged(float Health);	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -85,8 +86,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="AI")
 	TArray<AActor*> Targets;	
-	//***********TARGETING**************************	
-
+	//***********TARGETING**************************
+	
+	bool AfterDeath=false;
 public:	
 	// Called every frame
 	//virtual void Tick(float DeltaTime) override;
@@ -100,7 +102,6 @@ public:
 		return Head->GetComponentRotation();
 	}
 
-private:
+private:	
 	
-
 };

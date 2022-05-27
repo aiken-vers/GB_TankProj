@@ -99,6 +99,9 @@ void ADefaultTankActor::Destroyed()
 
 void ADefaultTankActor::OnDeath()
 {
+	if(AfterDeath)
+		return;
+	
 	if(Audio_Death)
 	{
 		if(Audio_Death)
@@ -114,6 +117,18 @@ void ADefaultTankActor::OnDeath()
 			
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), VisualEffect_Death, this->Body->GetComponentLocation(),
 			FRotator::ZeroRotator, this->GetActorScale()*ExplosionScale);
+	}
+	if(this->GetController()==GetWorld()->GetFirstPlayerController())
+	{
+		AfterDeath = true;
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		PlayerController->SetInputMode(FInputModeUIOnly());		
+		this->SetActorTickEnabled(false);
+		Collision->Deactivate();
+		if(VisualEffect_AfterDeath)			
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), VisualEffect_AfterDeath, this->Body->GetComponentLocation(),
+				FRotator::ZeroRotator, this->GetActorScale());
+		return;
 	}
 	Destroy();
 }

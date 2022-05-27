@@ -26,7 +26,9 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UParticleSystemComponent* VisualEffect_Damaged;
-
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UAudioComponent* Audio_AfterDeath;
 	
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
@@ -64,6 +66,7 @@ public:
 	void ChangeCannon(TSubclassOf<ACannon> InCannonClass);
 	void SwapWeapons();
 	void RefillAmmo(float AmmoCap);
+	void DeathCamera();
 
 	virtual void OnConstruction(const FTransform& Transform) override;
 protected:
@@ -89,4 +92,8 @@ private:
 	int PrimaryAmmo;
 	int SecondaryAmmo;
 	class ITargetController* TankController;
+
+	FTimerHandle CameraTimer;
+	FVector4 MonoSaturation;
+	FVector4 MonoContrast;
 };
