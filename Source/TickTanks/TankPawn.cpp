@@ -5,7 +5,8 @@
 
 
 #include "TickTanks.h"
-
+#include "Blueprint/UserWidget.h"
+#include "Components/WidgetComponent.h"
 
 
 // Sets default values
@@ -29,7 +30,7 @@ ATankPawn::ATankPawn()
 
 	PrimaryAmmo = StartPrimaryAmmo;
 	SecondaryAmmo = StartSecondaryAmmo;
-
+	
 	Audio_AfterDeath = CreateDefaultSubobject<UAudioComponent>("AfterDeathAudio");
 	Audio_AfterDeath->SetupAttachment(RootComponent);
 	MonoSaturation = FVector4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -207,7 +208,14 @@ void ATankPawn::OnDeath()
 
 	if(Audio_AfterDeath)
 		Audio_AfterDeath->Play();
-		
+
+	if(DeathScreen)
+	{
+		UUserWidget* DeathScreenWidget = CreateWidget<UUserWidget>(GetWorld(), DeathScreen);
+		if(DeathScreenWidget)
+			DeathScreenWidget->AddToViewport();
+	}
+	
 	Super::OnDeath();	
 	//UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);	
 }

@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "TankPlayerController.h"
+#include "Blueprint/UserWidget.h"
 #include "TankPawn.generated.h"
 
 class UCameraComponent;
@@ -17,7 +18,6 @@ class TICKTANKS_API ATankPawn : public ADefaultTankActor
 	GENERATED_BODY()
 
 public:	
-
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	USpringArmComponent* SpringArm;
 
@@ -29,7 +29,9 @@ public:
 	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UAudioComponent* Audio_AfterDeath;
-	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="UI")
+	TSubclassOf<UUserWidget> DeathScreen;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float MovementSpeed=100;
