@@ -32,6 +32,9 @@ ADefaultTankActor::ADefaultTankActor()
 	HealthComponent->OnDeath.AddUObject(this, &ADefaultTankActor::OnDeath);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ADefaultTankActor::OnHealthChanged);
 
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
+	HealthBar->SetupAttachment(RootComponent);
+
 	Audio_Death = CreateDefaultSubobject<UAudioComponent>("AudioComponent");
 	Audio_Death->SetupAttachment(RootComponent);
 }
@@ -92,6 +95,23 @@ void ADefaultTankActor::Destroyed()
 	Super::Destroyed();
 	if(Cannon)
 		Cannon->Destroy();
+}
+
+void ADefaultTankActor::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if(HealthBar)
+	{
+		auto CameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+		
+		auto TargetRotation = UKismetMathLibrary::FindLookAtRotation(
+			HealthBar->GetComponentLocation(),
+			CameraManager->GetCameraLocation()
+			);
+		
+		HealthBar->SetWorldRotation(TargetRotation);
+	}
 }
 
 // Called every frame

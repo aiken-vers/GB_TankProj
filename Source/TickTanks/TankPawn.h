@@ -7,7 +7,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "TankPlayerController.h"
-#include "Blueprint/UserWidget.h"
 #include "TankPawn.generated.h"
 
 class UCameraComponent;

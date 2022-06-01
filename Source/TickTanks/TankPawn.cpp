@@ -24,7 +24,7 @@ ATankPawn::ATankPawn()
 	HealthComponent->OnDeath.AddUObject(this, &ATankPawn::OnDeath);
 	HealthComponent->OnDamaged.AddUObject(this, &ATankPawn::OnDamaged);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ATankPawn::OnHealthChanged);
-
+	
 	VisualEffect_Damaged = CreateDefaultSubobject<UParticleSystemComponent>("VisualEffect_Damaged");
 	VisualEffect_Damaged->SetupAttachment(RootComponent);
 
