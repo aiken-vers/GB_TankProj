@@ -59,6 +59,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Effect")
 	UParticleSystem* VisualEffect_AfterDeath;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
+	bool ShowHealthBar=true;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
 	FName Team;
 	

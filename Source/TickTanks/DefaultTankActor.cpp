@@ -33,7 +33,7 @@ ADefaultTankActor::ADefaultTankActor()
 	HealthComponent->OnHealthChanged.AddUObject(this, &ADefaultTankActor::OnHealthChanged);
 
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
-	HealthBar->SetupAttachment(RootComponent);
+	HealthBar->SetupAttachment(RootComponent);	
 
 	Audio_Death = CreateDefaultSubobject<UAudioComponent>("AudioComponent");
 	Audio_Death->SetupAttachment(RootComponent);
@@ -161,6 +161,8 @@ void ADefaultTankActor::OnHealthChanged(float Health)
 void ADefaultTankActor::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	HealthBar->SetVisibility(ShowHealthBar);
 }
 
 //***********TARGETING**************************
