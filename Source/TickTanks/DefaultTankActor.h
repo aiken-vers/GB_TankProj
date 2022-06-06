@@ -7,6 +7,7 @@
 #include "Cannon.h"
 #include "DamageTarget.h"
 #include "HealthComponent.h"
+#include "HealthWidget.h"
 #include "ParticleHelper.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -75,7 +76,8 @@ public:
 	void RotateHead(FRotator HeadRotation, FRotator TargetRotation, bool Rotate2D);
 	void SetupCannon(TSubclassOf<ACannon> InCannonClass);
 	virtual void OnDeath();
-	virtual void OnHealthChanged(float Health);	
+	virtual void OnHealthChanged(float Health);
+	void UpdateHealth();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -4,6 +4,7 @@
 #include "TankPawn.h"
 
 
+#include "DeathScreen.h"
 #include "TickTanks.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/WidgetComponent.h"
@@ -214,6 +215,9 @@ void ATankPawn::OnDeath()
 		UUserWidget* DeathScreenWidget = CreateWidget<UUserWidget>(GetWorld(), DeathScreen);
 		if(DeathScreenWidget)
 			DeathScreenWidget->AddToViewport();
+
+		UDeathScreen* DeathScreenAnimated = Cast<UDeathScreen>(DeathScreenWidget);
+		DeathScreenAnimated->Play();
 	}
 	
 	Super::OnDeath();	
@@ -248,6 +252,7 @@ void ATankPawn::OnDamaged()
 
 void ATankPawn::OnHealthChanged(float Health)
 {
-	GEngine->AddOnScreenDebugMessage(98757, 10000, FColor::Red, FString::Printf(TEXT("Tank HP %f"), Health));
+	Super::OnHealthChanged(Health);
+	//GEngine->AddOnScreenDebugMessage(98757, 10000, FColor::Red, FString::Printf(TEXT("Tank HP %f"), Health));
 }
 
