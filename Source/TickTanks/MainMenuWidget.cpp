@@ -8,7 +8,6 @@
 void UMainMenuWidget::NativeConstruct()
 {
 	Super::NativeConstruct();	
-	
 	if(StartButton)
 		StartButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OpenFirst);
 	
@@ -39,6 +38,12 @@ void UMainMenuWidget::NativeConstruct()
 
 	if(SwitchToRadio)
 		SwitchToRadio->OnClicked.AddDynamic(this, &UMainMenuWidget::SwitchToRadioButtons);
+
+	if(AddRadio)
+		AddRadio->OnClicked.AddDynamic(this, &UMainMenuWidget::AddRadioButtons);
+
+	if(RemoveRadio)
+		RemoveRadio->OnClicked.AddDynamic(this, &UMainMenuWidget::RemoveRadioButtons);
 
 	if(QuitGame)
 		QuitGame->OnClicked.AddDynamic(this, &UMainMenuWidget::Quit);	
@@ -125,6 +130,16 @@ void UMainMenuWidget::SwitchToRadioButtons()
 {
 	int32 RadioIndex = 1;
 	SwitchMenu(RadioIndex);
+}
+
+void UMainMenuWidget::AddRadioButtons()
+{
+	RadioButtonsWidget->AddValueToSize(1);
+}
+
+void UMainMenuWidget::RemoveRadioButtons()
+{
+	RadioButtonsWidget->AddValueToSize(-1);
 }
 
 void UMainMenuWidget::SwitchMenu(int32 WidgetIndex)

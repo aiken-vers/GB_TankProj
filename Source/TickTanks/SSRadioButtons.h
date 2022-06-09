@@ -2,20 +2,43 @@
 
 #pragma once
 
-#include <list>
 
+#include <vector>
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
+#include "SSRadioButtons.generated.h"
 
-UENUM(BlueprintType)
-enum class ERadioChoice : uint8
+
+USTRUCT(BlueprintType)
+struct FRadioChoice
 {
-	Radio0,
-	Radio1,
-	Radio2,
+	GENERATED_BODY()
+/*
+	FORCEINLINE FRadioChoice()
+	{
+		Name = TEXT("Radio");
+		Index = 0;
+	}
+	explicit FORCEINLINE FRadioChoice(FName FValue, uint8 IValue)
+	{
+		Name = FValue;
+		Index = IValue;
+	}
+*/
+	
+	UPROPERTY(BlueprintReadWrite)
+	FString Name;
+	UPROPERTY(BlueprintReadWrite)
+	uint8 Index;
+
+	bool operator == (const FRadioChoice& Other) const
+	{
+		return Index == Other.Index;
+	}
+	
 };
 
-DECLARE_DELEGATE_OneParam(FOnRadioChoiceChanged, ERadioChoice)
+DECLARE_DELEGATE_OneParam(FOnRadioChoiceChanged, FRadioChoice)
 
 class TICKTANKS_API SSRadioButtons : public SCompoundWidget
 {
@@ -24,21 +47,29 @@ public:
 	{}
 
 	SLATE_EVENT(FOnRadioChoiceChanged, OnRadioChoiceChanged)
+	SLATE_ATTRIBUTE(uint8, DefaultCheckBox)
+	SLATE_ATTRIBUTE(uint8, DefaultSize)
 	
 	SLATE_END_ARGS()
 
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
-	//void ChangeDefaultCheckBox(uint8 NewIndex);
+	virtual void Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) override;
 	
 protected:
-	ECheckBoxState IsRadioButtonChecked(ERadioChoice RadioButtonID);
-	void HandleRadioButtonStateChanged(ECheckBoxState NewRadioState, ERadioChoice RadioButtonID);
-	TSharedRef<SWidget> CreateRadioButton(const FString& RadioText, ERadioChoice RadioButtonChoice);	
+	ECheckBoxState IsRadioButtonChecked(FRadioChoice RadioButtonID);
+	void HandleRadioButtonStateChanged(ECheckBoxState NewRadioState, FRadioChoice RadioButtonID);
+	TSharedRef<SWidget> CreateRadioButton(FRadioChoice RadioButtonChoice);
+	void CheckListSize();
+	void AddRadioButton(uint8 Index);
+	void LoadAllButtons();
 
-protected:
-	ERadioChoice CurrentChoice;
-	FOnRadioChoiceChanged OnRadioChoiceChanged;
-	//uint8 DefaultCheckBox = 0;
-	//uint8 DefaultSize = 3;
+public:	
+	std::vector<FRadioChoice> RadioButtonsList;
+	TSharedRef<SVerticalBox> VerticalBoxRef = SNew(SVerticalBox);	
+protected:	
+	FRadioChoice CurrentChoice;
+	FOnRadioChoiceChanged OnRadioChoiceChanged;	
+	TAttribute<uint8> DefaultCheckBox;
+	TAttribute<uint8> DefaultSize;
 };

@@ -7,38 +7,42 @@
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SSRadioButtons::Construct(const FArguments& InArgs)
 {
-	OnRadioChoiceChanged = InArgs._OnRadioChoiceChanged;
+	DefaultSize = 3;
+	DefaultCheckBox = 0;	
 	
-	CurrentChoice = ERadioChoice::Radio0;
+	OnRadioChoiceChanged = InArgs._OnRadioChoiceChanged;
+	DefaultCheckBox = InArgs._DefaultCheckBox;
+	DefaultSize = InArgs._DefaultSize;
+	
+	CheckListSize();
+	CurrentChoice = RadioButtonsList[DefaultCheckBox.Get()];
 	
 	ChildSlot
-	[
-		SNew(SVerticalBox)
-		+SVerticalBox::Slot()
-		[
-			//CreateRadioButton("Option0", ERadioChoice::Radio0)
-			CreateRadioButton("Option0", ERadioChoice::Radio0)
-		]
-		+SVerticalBox::Slot()
-		[
-			CreateRadioButton("Option1", ERadioChoice::Radio1)
-		]
-		+SVerticalBox::Slot()
-		[
-			CreateRadioButton("Option2", ERadioChoice::Radio2)
-		]
+	[		
+		SAssignNew(VerticalBoxRef, SVerticalBox)
 	];
-	
+	LoadAllButtons();
 }
 
-ECheckBoxState SSRadioButtons::IsRadioButtonChecked(ERadioChoice RadioButtonID)
+void SSRadioButtons::Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime)
 {
+	SCompoundWidget::Tick(AllottedGeometry, InCurrentTime, InDeltaTime);
+	
+	if(RadioButtonsList.size()==DefaultSize.Get())
+		return;
+
+	CheckListSize();
+	LoadAllButtons();	
+}
+
+ECheckBoxState SSRadioButtons::IsRadioButtonChecked(FRadioChoice RadioButtonID)
+{	
 	return(CurrentChoice==RadioButtonID)
 	? ECheckBoxState::Checked
-	: ECheckBoxState::Unchecked;
+	: ECheckBoxState::Unchecked;	
 }
 
-void SSRadioButtons::HandleRadioButtonStateChanged(ECheckBoxState NewRadioState, ERadioChoice RadioButtonID)
+void SSRadioButtons::HandleRadioButtonStateChanged(ECheckBoxState NewRadioState, FRadioChoice RadioButtonID)
 {
 	if(NewRadioState == ECheckBoxState::Checked)
 	{
@@ -47,25 +51,47 @@ void SSRadioButtons::HandleRadioButtonStateChanged(ECheckBoxState NewRadioState,
 	}	
 }
 
-TSharedRef<SWidget> SSRadioButtons::CreateRadioButton(const FString& RadioText, ERadioChoice RadioButtonChoice)
+TSharedRef<SWidget> SSRadioButtons::CreateRadioButton(FRadioChoice RadioButtonChoice)
 {
 	return SNew(SCheckBox)
 	.IsChecked(MakeAttributeRaw(this, &SSRadioButtons::IsRadioButtonChecked, RadioButtonChoice))
 	.OnCheckStateChanged(this, &SSRadioButtons::HandleRadioButtonStateChanged, RadioButtonChoice)
 	[
 		SNew(STextBlock)
-		.Text(FText::FromString(RadioText))
+		.Text(FText::FromString(RadioButtonChoice.Name))
 	];
 }
-/*
-void SSRadioButtons::ChangeDefaultCheckBox(uint8 NewIndex)
+
+void SSRadioButtons::CheckListSize()
 {
-	
-	if(DefaultSize<NewIndex+1)
-		return;
-	DefaultCheckBox = NewIndex;
-	
+	while(RadioButtonsList.size()<DefaultSize.Get())
+	{
+		uint8 Index = RadioButtonsList.size();
+		FString Tempname = "Radio"+FString::FromInt(Index);
+		FRadioChoice NewChoice {Tempname, Index};
+		RadioButtonsList.push_back(NewChoice);
+	}
+	while(RadioButtonsList.size()>DefaultSize.Get())
+	{
+		RadioButtonsList.pop_back();
+	}
 }
-*/
+
+void SSRadioButtons::AddRadioButton(uint8 Index)
+{
+	VerticalBoxRef->AddSlot()
+	[
+		CreateRadioButton(RadioButtonsList[Index])
+	];
+}
+
+void SSRadioButtons::LoadAllButtons()
+{
+	VerticalBoxRef->ClearChildren();
+	for(uint8 i = 0; i < RadioButtonsList.size(); i++)
+	{
+		AddRadioButton(i);
+	}
+}
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

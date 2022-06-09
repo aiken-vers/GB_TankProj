@@ -8,7 +8,7 @@
 #include "RadioButtons.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRadioChoiceChangedEvent, ERadioChoice, NewRadioChoice);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRadioChoiceChangedEvent, FRadioChoice, NewRadioChoice);
 
 UCLASS()
 class TICKTANKS_API URadioButtons : public UWidget
@@ -22,12 +22,16 @@ public:
 	uint8 ListSize = 3;
 	
 	virtual void ReleaseSlateResources(bool bReleaseChildren) override;
-	//virtual void OnEndEditByDesigner() override;
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;	
+	void AddValueToSize(int Value);	
 
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 
-	void HandleOnRadioChoiceChanged(ERadioChoice NewRadioChoice);
+	void HandleOnRadioChoiceChanged(FRadioChoice NewRadioChoice) const;
+
+	uint8 GetDefaultCheckBox() const;
+	uint8 GetDefaultSize() const;
 
 public:
 	UPROPERTY(BlueprintAssignable)

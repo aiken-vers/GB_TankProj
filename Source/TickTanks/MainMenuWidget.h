@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "RadioButtons.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/Slider.h"
@@ -37,6 +38,12 @@ protected:
 	USlider* MusicSlider;
 	UPROPERTY(meta = (BindWidgetOptional))
 	UWidgetSwitcher* MenuWidgetSwitcher;
+	UPROPERTY(meta = (BindWidgetOptional))
+	URadioButtons* RadioButtonsWidget;
+	UPROPERTY(meta = (BindWidgetOptional))
+	UButton* AddRadio;
+	UPROPERTY(meta = (BindWidgetOptional))
+	UButton* RemoveRadio;
 
 	UPROPERTY(BlueprintReadOnly,Transient, meta = (BindWidgetAnim))
 	UWidgetAnimation* Lvl1Hover;
@@ -77,6 +84,11 @@ protected:
 
 	UFUNCTION()
 	void SwitchToRadioButtons();
+
+	UFUNCTION()
+	void AddRadioButtons();
+	UFUNCTION()
+	void RemoveRadioButtons();
 	
 private:
 	FTimerHandle LoadTimer;
