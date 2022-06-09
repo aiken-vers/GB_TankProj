@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/Slider.h"
+#include "Components/WidgetSwitcher.h"
 #include "Kismet/GameplayStatics.h"
 #include "MainMenuWidget.generated.h"
 
@@ -23,6 +24,8 @@ protected:
 	UPROPERTY(meta = (BindWidgetOptional))
 	UButton* StartButton;
 	UPROPERTY(meta = (BindWidgetOptional))
+	UButton* SwitchToRadio;
+	UPROPERTY(meta = (BindWidgetOptional))
 	UButton* FirstLevel;
 	UPROPERTY(meta = (BindWidgetOptional))
 	UButton* SecondLevel;
@@ -32,6 +35,8 @@ protected:
 	UButton* QuitGame;
 	UPROPERTY(meta = (BindWidgetOptional))
 	USlider* MusicSlider;
+	UPROPERTY(meta = (BindWidgetOptional))
+	UWidgetSwitcher* MenuWidgetSwitcher;
 
 	UPROPERTY(BlueprintReadOnly,Transient, meta = (BindWidgetAnim))
 	UWidgetAnimation* Lvl1Hover;
@@ -70,10 +75,13 @@ protected:
 	UFUNCTION()
 	void Quit();
 
+	UFUNCTION()
+	void SwitchToRadioButtons();
 	
 private:
 	FTimerHandle LoadTimer;
-	void OpenLevel();	
+	void OpenLevel();
+	void SwitchMenu(int32 WidgetIndex);
 	FName LevelName ="DefaultMap";
 	FName MusicPath = "/Game/CSC/Demo/Sounds/Music.Music";
 };

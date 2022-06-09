@@ -37,6 +37,9 @@ void UMainMenuWidget::NativeConstruct()
 	if(MusicSlider)
 		MusicSlider->OnValueChanged.AddDynamic(this, &UMainMenuWidget::ChangeMusicVolume);
 
+	if(SwitchToRadio)
+		SwitchToRadio->OnClicked.AddDynamic(this, &UMainMenuWidget::SwitchToRadioButtons);
+
 	if(QuitGame)
 		QuitGame->OnClicked.AddDynamic(this, &UMainMenuWidget::Quit);	
 }
@@ -117,3 +120,16 @@ void UMainMenuWidget::Quit()
 	GetWorld()->GetTimerManager().ClearTimer(LoadTimer);
 	UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
 }
+
+void UMainMenuWidget::SwitchToRadioButtons()
+{
+	int32 RadioIndex = 1;
+	SwitchMenu(RadioIndex);
+}
+
+void UMainMenuWidget::SwitchMenu(int32 WidgetIndex)
+{
+	MenuWidgetSwitcher->SetActiveWidgetIndex(WidgetIndex);
+}
+
+
