@@ -55,6 +55,10 @@ public:
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
 	virtual void Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) override;
+	//
+	// Скопировано со слайдера т.к. атрибуты обновлялись при компиляции, но не в реалтайме	
+	void SetSize(uint8 Value);
+	void SetChoice(uint8 Value);
 	
 protected:
 	ECheckBoxState IsRadioButtonChecked(FRadioChoice RadioButtonID);

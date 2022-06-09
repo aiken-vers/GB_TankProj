@@ -4,6 +4,7 @@
 #include "RadioButtons.h"
 
 #include "IContentBrowserSingleton.h"
+#include "Layers/LayersSubsystem.h"
 
 void URadioButtons::ReleaseSlateResources(bool bReleaseChildren)
 {
@@ -26,7 +27,15 @@ void URadioButtons::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 void URadioButtons::AddValueToSize(int Value)
 {
 	ListSize+=Value;
+
+	if(ListSize<1)
+		ListSize=1;
 	
+	if(DefaultCheckBoxIndex>=ListSize)
+		DefaultCheckBoxIndex = ListSize-1;
+	
+	MyRadioButtons->SetSize(ListSize);
+	MyRadioButtons->SetChoice(DefaultCheckBoxIndex);
 }
 
 TSharedRef<SWidget> URadioButtons::RebuildWidget()
@@ -43,7 +52,7 @@ void URadioButtons::HandleOnRadioChoiceChanged(FRadioChoice NewRadioChoice) cons
 {
 	if(!OnRadioChoiceChanged.IsBound())
 		return;
-	
+
 	OnRadioChoiceChanged.Broadcast(NewRadioChoice);
 }
 

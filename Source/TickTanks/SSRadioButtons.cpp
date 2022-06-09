@@ -94,4 +94,14 @@ void SSRadioButtons::LoadAllButtons()
 	}
 }
 
+void SSRadioButtons::SetSize(uint8 Value)
+{
+	DefaultSize = Value;
+}
+
+void SSRadioButtons::SetChoice(uint8 Value)
+{
+	DefaultCheckBox = Value;
+}
+
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
