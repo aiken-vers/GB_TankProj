@@ -92,16 +92,13 @@ void SSRadioButtons::LoadAllButtons()
 	{
 		AddRadioButton(i);
 	}
+	if(CurrentChoice.Index>=RadioButtonsList.size())
+		CurrentChoice = RadioButtonsList[RadioButtonsList.size()-1];
 }
 
 void SSRadioButtons::SetSize(uint8 Value)
 {
 	DefaultSize = Value;
-}
-
-void SSRadioButtons::SetChoice(uint8 Value)
-{
-	DefaultCheckBox = Value;
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

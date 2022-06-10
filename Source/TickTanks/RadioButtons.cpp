@@ -27,15 +27,12 @@ void URadioButtons::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 void URadioButtons::AddValueToSize(int Value)
 {
 	ListSize+=Value;
+	
 
 	if(ListSize<1)
 		ListSize=1;
 	
-	if(DefaultCheckBoxIndex>=ListSize)
-		DefaultCheckBoxIndex = ListSize-1;
-	
 	MyRadioButtons->SetSize(ListSize);
-	MyRadioButtons->SetChoice(DefaultCheckBoxIndex);
 }
 
 TSharedRef<SWidget> URadioButtons::RebuildWidget()
@@ -45,7 +42,7 @@ TSharedRef<SWidget> URadioButtons::RebuildWidget()
 	.DefaultCheckBox(GetDefaultCheckBox())
 	.DefaultSize(GetDefaultSize());
 
-	return MyRadioButtons.ToSharedRef();	
+	return MyRadioButtons.ToSharedRef();
 }
 
 void URadioButtons::HandleOnRadioChoiceChanged(FRadioChoice NewRadioChoice) const

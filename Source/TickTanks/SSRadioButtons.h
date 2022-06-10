@@ -13,18 +13,6 @@ USTRUCT(BlueprintType)
 struct FRadioChoice
 {
 	GENERATED_BODY()
-/*
-	FORCEINLINE FRadioChoice()
-	{
-		Name = TEXT("Radio");
-		Index = 0;
-	}
-	explicit FORCEINLINE FRadioChoice(FName FValue, uint8 IValue)
-	{
-		Name = FValue;
-		Index = IValue;
-	}
-*/
 	
 	UPROPERTY(BlueprintReadWrite)
 	FString Name;
@@ -58,7 +46,6 @@ public:
 	//
 	// Скопировано со слайдера т.к. атрибуты обновлялись при компиляции, но не в реалтайме	
 	void SetSize(uint8 Value);
-	void SetChoice(uint8 Value);
 	
 protected:
 	ECheckBoxState IsRadioButtonChecked(FRadioChoice RadioButtonID);
