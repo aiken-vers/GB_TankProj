@@ -16,6 +16,8 @@ void UMainMenuWidget::NativePreConstruct()
 	else
 	{
 		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(FName("RadioButtonStyle"));
+		AddRadio->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FButtonStyle>(FName("ButtonStyle"));
+		RemoveRadio->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FButtonStyle>(FName("ButtonStyle"));
 	}
 }
 
@@ -153,12 +155,20 @@ void UMainMenuWidget::SwitchRadioMode(bool Checked)
 {
 	if(RadioButtonsWidget)
 	{
-		FName CurrentStyle = "RadioButtonStyle";
+		FName CurrentRadioStyle = "RadioButtonStyle";
+		FName CurrentButtonStyle = "ButtonStyle";
+		
 		
 		if(Checked)
-			CurrentStyle = "RadioButtonStyle_Dark";
+		{
+			CurrentRadioStyle = "RadioButtonStyle_Dark";
+			CurrentButtonStyle = "ButtonStyle_Dark";
+		}
+			
 		
-		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(CurrentStyle);		
+		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(CurrentRadioStyle);
+		AddRadio->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FButtonStyle>(CurrentButtonStyle);
+		RemoveRadio->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FButtonStyle>(CurrentButtonStyle);
 	}
 }
 
