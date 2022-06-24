@@ -9,15 +9,13 @@
 void UMainMenuWidget::NativePreConstruct()
 {
 	Super::NativePreConstruct();
-	if(RadioButtonsWidget)
+	if(StyleCheckBox)
 	{
-		FName CurrentStyle = "RadioButtonStyle";
-		if(StyleCheckBox)
-		{
-			if(StyleCheckBox->IsChecked())
-				CurrentStyle = "RadioButtonStyle_Dark";
-		}
-		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(CurrentStyle);
+		SwitchRadioMode(StyleCheckBox->IsChecked());
+	}
+	else
+	{
+		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(FName("RadioButtonStyle"));
 	}
 }
 
@@ -54,6 +52,9 @@ void UMainMenuWidget::NativeConstruct()
 
 	if(SwitchToRadio)
 		SwitchToRadio->OnClicked.AddDynamic(this, &UMainMenuWidget::SwitchToRadioButtons);
+
+	if(StyleCheckBox)
+		StyleCheckBox->OnCheckStateChanged.AddDynamic(this, &UMainMenuWidget::SwitchRadioMode);
 
 	if(AddRadio)
 		AddRadio->OnClicked.AddDynamic(this, &UMainMenuWidget::AddRadioButtons);
@@ -142,10 +143,23 @@ void UMainMenuWidget::Quit()
 	UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
 }
 
-void UMainMenuWidget::SwitchToRadioButtons()
+void UMainMenuWidget:: SwitchToRadioButtons()
 {
 	int32 RadioIndex = 1;
 	SwitchMenu(RadioIndex);
+}
+
+void UMainMenuWidget::SwitchRadioMode(bool Checked)
+{
+	if(RadioButtonsWidget)
+	{
+		FName CurrentStyle = "RadioButtonStyle";
+		
+		if(Checked)
+			CurrentStyle = "RadioButtonStyle_Dark";
+		
+		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(CurrentStyle);		
+	}
 }
 
 void UMainMenuWidget::AddRadioButtons()

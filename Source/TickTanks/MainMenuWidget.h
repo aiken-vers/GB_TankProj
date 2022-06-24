@@ -88,6 +88,8 @@ protected:
 
 	UFUNCTION()
 	void SwitchToRadioButtons();
+	UFUNCTION()
+	void SwitchRadioMode(bool Checked);
 
 	UFUNCTION()
 	void AddRadioButtons();
