@@ -11,7 +11,13 @@ void UMainMenuWidget::NativePreConstruct()
 	Super::NativePreConstruct();
 	if(RadioButtonsWidget)
 	{
-		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(FName("RadioButtonStyle"));
+		FName CurrentStyle = "RadioButtonStyle";
+		if(StyleCheckBox)
+		{
+			if(StyleCheckBox->IsChecked())
+				CurrentStyle = "RadioButtonStyle_Dark";
+		}
+		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(CurrentStyle);
 	}
 }
 

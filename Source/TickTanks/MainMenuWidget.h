@@ -6,6 +6,7 @@
 #include "RadioButtons.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "Components/CheckBox.h"
 #include "Components/Slider.h"
 #include "Components/WidgetSwitcher.h"
 #include "Kismet/GameplayStatics.h"
@@ -41,6 +42,8 @@ protected:
 	UWidgetSwitcher* MenuWidgetSwitcher;
 	UPROPERTY(meta = (BindWidgetOptional))
 	URadioButtons* RadioButtonsWidget;
+	UPROPERTY(meta = (BindWidgetOptional))
+	UCheckBox* StyleCheckBox;
 	UPROPERTY(meta = (BindWidgetOptional))
 	UButton* AddRadio;
 	UPROPERTY(meta = (BindWidgetOptional))
