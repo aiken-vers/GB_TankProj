@@ -3,7 +3,17 @@
 
 #include "MainMenuWidget.h"
 
+#include "StyleSet.h"
 
+
+void UMainMenuWidget::NativePreConstruct()
+{
+	Super::NativePreConstruct();
+	if(RadioButtonsWidget)
+	{
+		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(FName("RadioButtonStyle"));
+	}
+}
 
 void UMainMenuWidget::NativeConstruct()
 {

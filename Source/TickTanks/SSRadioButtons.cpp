@@ -12,7 +12,8 @@ void SSRadioButtons::Construct(const FArguments& InArgs)
 	
 	OnRadioChoiceChanged = InArgs._OnRadioChoiceChanged;
 	DefaultCheckBox = InArgs._DefaultCheckBox;
-	DefaultSize = InArgs._DefaultSize;
+	DefaultSize = InArgs._DefaultSize;	
+	SetRadioButtonStyle(InArgs._Style);
 	
 	CheckListSize();
 	CurrentChoice = RadioButtonsList[DefaultCheckBox.Get()];
@@ -56,9 +57,11 @@ TSharedRef<SWidget> SSRadioButtons::CreateRadioButton(FRadioChoice RadioButtonCh
 	return SNew(SCheckBox)
 	.IsChecked(MakeAttributeRaw(this, &SSRadioButtons::IsRadioButtonChecked, RadioButtonChoice))
 	.OnCheckStateChanged(this, &SSRadioButtons::HandleRadioButtonStateChanged, RadioButtonChoice)
+	.Style(CheckBoxStyle)
 	[
 		SNew(STextBlock)
 		.Text(FText::FromString(RadioButtonChoice.Name))
+		.TextStyle(TextStyle)
 	];
 }
 
@@ -99,6 +102,12 @@ void SSRadioButtons::LoadAllButtons()
 void SSRadioButtons::SetSize(uint8 Value)
 {
 	DefaultSize = Value;
+}
+
+void SSRadioButtons::SetRadioButtonStyle(const FFRadioButtonStyle* InStyle)
+{
+	CheckBoxStyle = &InStyle->CheckBoxStyle;
+	TextStyle = &InStyle->TextStyle;	
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

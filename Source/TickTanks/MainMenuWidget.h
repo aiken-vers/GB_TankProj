@@ -18,7 +18,8 @@ class TICKTANKS_API UMainMenuWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	
+
+	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 	
 protected:	

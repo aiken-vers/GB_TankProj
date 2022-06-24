@@ -36,6 +36,9 @@ protected:
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnRadioChoiceChangedEvent OnRadioChoiceChanged;
+
+	UPROPERTY(EditAnywhere, Category = "Appearance", meta = (DisplayName = "Style"))
+	FFRadioButtonStyle WidgetStyle;
 	
 protected:
 	TSharedPtr<SSRadioButtons> MyRadioButtons;

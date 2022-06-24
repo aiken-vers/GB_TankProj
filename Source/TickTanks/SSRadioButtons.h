@@ -5,6 +5,7 @@
 
 #include <vector>
 #include "CoreMinimal.h"
+#include "FRadioButtonWidgetStyle.h"
 #include "Widgets/SCompoundWidget.h"
 #include "SSRadioButtons.generated.h"
 
@@ -37,6 +38,7 @@ public:
 	SLATE_EVENT(FOnRadioChoiceChanged, OnRadioChoiceChanged)
 	SLATE_ATTRIBUTE(uint8, DefaultCheckBox)
 	SLATE_ATTRIBUTE(uint8, DefaultSize)
+	SLATE_STYLE_ARGUMENT(FFRadioButtonStyle, Style)
 	
 	SLATE_END_ARGS()
 
@@ -46,6 +48,8 @@ public:
 	//
 	// Скопировано со слайдера т.к. атрибуты обновлялись при компиляции, но не в реалтайме	
 	void SetSize(uint8 Value);
+
+	void SetRadioButtonStyle(const FFRadioButtonStyle* InStyle);
 	
 protected:
 	ECheckBoxState IsRadioButtonChecked(FRadioChoice RadioButtonID);
@@ -63,4 +67,7 @@ protected:
 	FOnRadioChoiceChanged OnRadioChoiceChanged;	
 	TAttribute<uint8> DefaultCheckBox;
 	TAttribute<uint8> DefaultSize;
+
+	const FCheckBoxStyle* CheckBoxStyle;
+	const FTextBlockStyle* TextStyle;
 };

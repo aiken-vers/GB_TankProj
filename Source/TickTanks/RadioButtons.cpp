@@ -40,7 +40,8 @@ TSharedRef<SWidget> URadioButtons::RebuildWidget()
 	MyRadioButtons = SNew(SSRadioButtons)
 	.OnRadioChoiceChanged(BIND_UOBJECT_DELEGATE(FOnRadioChoiceChanged, HandleOnRadioChoiceChanged))
 	.DefaultCheckBox(GetDefaultCheckBox())
-	.DefaultSize(GetDefaultSize());
+	.DefaultSize(GetDefaultSize())
+	.Style(&WidgetStyle);
 
 	return MyRadioButtons.ToSharedRef();
 }
