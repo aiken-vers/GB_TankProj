@@ -14,11 +14,7 @@ void UMainMenuWidget::NativePreConstruct()
 		SwitchRadioMode(StyleCheckBox->IsChecked());
 	}
 	else
-	{
-		RadioButtonsWidget->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FFRadioButtonStyle>(FName("RadioButtonStyle"));
-		AddRadio->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FButtonStyle>(FName("ButtonStyle"));
-		RemoveRadio->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FButtonStyle>(FName("ButtonStyle"));
-	}
+		SwitchRadioMode(false);
 }
 
 void UMainMenuWidget::NativeConstruct()
